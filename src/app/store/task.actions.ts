@@ -6,10 +6,8 @@ export enum TaskActionType {
 }
 
 export class AddTaskAction implements Action {
-
   readonly type = TaskActionType.ADD_ITEM;
   constructor(public payload: taskInterface) {}
-
 }
 
 export type TaskAction = AddTaskAction;

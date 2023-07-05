@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '../store';
+import { AddTaskAction } from '../store/task.actions';
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
@@ -7,7 +10,17 @@ import { Component } from '@angular/core';
 export class AddComponent {
   title: string = "";
 
+  constructor(private store: Store<AppState>){}
+
   onSubmit():void{
-    //this.tasksService.addTask(this.title, "ss", new Date()).subscribe();
+    this.store.dispatch(
+      new AddTaskAction({
+        id: Math.random().toString(16),
+        title: this.title,
+        description: "siemano",
+        date: new Date(),
+      })
+    );
+    this.title = "";
   }
 }
