@@ -8,9 +8,9 @@
       <th></th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-task>
+  <ng-template pTemplate="body" let-task let-i="rowIndex">
     <tr>
-      <td>{{ task.id }}</td>
+      <td>{{ i + 1 }}</td>
       <td>{{ task.title }}</td>
       <td>{{ task.description }}</td>
       <td>{{ task.date.toLocaleDateString() }}</td>
