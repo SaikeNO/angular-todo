@@ -1,13 +1,11 @@
-import { Action } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 import { taskInterface } from 'src/types/task';
 
 export enum TaskActionType {
   ADD_ITEM = '[TASK] Add TASK',
+  REMOVE_ITEM = '[TASK] Remove TASK'
 }
 
-export class AddTaskAction implements Action {
-  readonly type = TaskActionType.ADD_ITEM;
-  constructor(public payload: taskInterface) {}
-}
+export const addTask = createAction(TaskActionType.ADD_ITEM, props<{task:taskInterface}>())
 
-export type TaskAction = AddTaskAction;
+export const removeTask = createAction(TaskActionType.REMOVE_ITEM, props<{id:string}>())

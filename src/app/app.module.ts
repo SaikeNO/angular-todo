@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { AddComponent } from './add/add.component';
 
-import { reducers } from './store'
+import { taskReducer } from './store/tasks.reducer';
 
 import { ButtonModule } from 'primeng/button';
 import { TabMenuModule } from 'primeng/tabmenu';
@@ -40,7 +40,7 @@ import { MessageModule } from 'primeng/message';
     BrowserAnimationsModule,
     MessagesModule,
     MessageModule,
-    StoreModule.forRoot(reducers)
+    StoreModule.forRoot({tasks: taskReducer})
   ],
   providers: [],
   bootstrap: [AppComponent]

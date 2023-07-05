@@ -21,6 +21,7 @@
           title="Edit Task"
         ></p-button>
         <p-button
+          (onClick)="onDoneClick(task.id)"
           icon="pi pi-check"
           styleClass="p-button-rounded p-button-text p-button-raised"
           title="Done"

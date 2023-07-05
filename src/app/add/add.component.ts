@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../store';
-import { AddTaskAction } from '../store/task.actions';
+import * as TaskActions from '../store/task.actions';
+
 import { Message } from 'primeng/api';
 @Component({
   selector: 'app-add',
@@ -14,7 +14,8 @@ export class AddComponent {
   date: Date = new Date();
   messages: Message[] = [];
   isError: boolean = false;
-  constructor(private store: Store<AppState>){}
+
+  constructor(private store: Store){}
 
   onSubmit():void{
     if(!this.title){
@@ -24,11 +25,13 @@ export class AddComponent {
     }
 
     this.store.dispatch(
-      new AddTaskAction({
-        id: Math.random().toString(16),
-        title: this.title,
-        description: this.description,
-        date: this.date,
+      TaskActions.addTask({
+        task:{
+          id: Math.random().toString(16),
+          title: this.title,
+          description: this.description,
+          date: this.date,
+        }
       })
     );
 

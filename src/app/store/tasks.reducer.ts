@@ -1,23 +1,18 @@
+import { createReducer, on } from '@ngrx/store';
 import { taskInterface } from 'src/types/task';
-import { TaskAction, TaskActionType } from '../store/task.actions';
+import * as TasksAction from '../store/task.actions'
 
 const initialState: taskInterface[] = [
   {
     id: '1',
     title: 'Angular State Management with NgRx',
     description: 'Chameera Dulanga',
-    date: new Date,
-},
+    date: new Date(),
+  },
 ];
 
-export function TaskReducer(
-   state: taskInterface[] = initialState,
-   action: TaskAction
-) {
-   switch (action.type) {
-     case TaskActionType.ADD_ITEM:
-       return [...state, action.payload];
-     default:
-       return state;
-   }
-}
+export const taskReducer = createReducer(
+  initialState,
+  on(TasksAction.addTask, (state, {task}) => [...state, task]),
+  on(TasksAction.removeTask, (state, {id}) => state.filter(prevState => prevState.id !== id))
+) 
