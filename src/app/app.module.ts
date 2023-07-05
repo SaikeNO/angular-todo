@@ -10,6 +10,10 @@ import { AddComponent } from './add/add.component';
 import { ButtonModule } from 'primeng/button';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { reducers } from './store'
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,7 +25,10 @@ import { TableModule } from 'primeng/table';
     AppRoutingModule,
     ButtonModule,
     TabMenuModule,
-    TableModule
+    TableModule,
+    InputTextModule,
+    FormsModule,
+    StoreModule.forRoot(reducers)
   ],
   providers: [],
   bootstrap: [AppComponent]

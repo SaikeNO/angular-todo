@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { TaskService } from '../tasks.service';
 import { taskInterface } from 'src/types/task';
+import { Store } from '@ngrx/store';
+import { AppState } from '../store';
 
 @Component({
   selector: 'app-tasks',
@@ -10,13 +11,12 @@ import { taskInterface } from 'src/types/task';
 })
 export class TasksComponent implements OnInit  {
   tasks: taskInterface[] = [];
+  title: string = "";
+  constructor(private store: Store<AppState>) {}
 
-  constructor(private taskService: TaskService){}
-
-  ngOnInit():void{
-    this.taskService.getTasks().subscribe((tasks:taskInterface[]) =>{
-      console.log(tasks);
+  ngOnInit(): void {
+    this.store.select((store) => store.tasks).subscribe(tasks =>{
       this.tasks = tasks;
-    })
+    });
   }
 }
