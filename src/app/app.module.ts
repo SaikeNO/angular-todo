@@ -20,14 +20,16 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CalendarModule } from 'primeng/calendar';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
+import { ToastModule } from 'primeng/toast';
 import { TaskComponent } from './task/task.component';
-
+import { EditComponent } from './edit/edit.component';
 @NgModule({
   declarations: [
     AppComponent,
     TasksComponent,
     AddComponent,
-    TaskComponent
+    TaskComponent,
+    EditComponent
   ],
   imports: [
     BrowserModule,
@@ -42,6 +44,7 @@ import { TaskComponent } from './task/task.component';
     BrowserAnimationsModule,
     MessagesModule,
     MessageModule,
+    ToastModule, 
     StoreModule.forRoot({tasks: taskReducer})
   ],
   providers: [],

@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
       this.menuItems = [
         { label: 'Home', icon: PrimeIcons.HOME, routerLink: '/tasks', },
         { label: 'Add new', icon: PrimeIcons.PLUS, routerLink: '/add' },
+        { label: 'Edit', icon: PrimeIcons.FILE_EDIT, routerLink: '/edit' },
     ];
   }
 }
