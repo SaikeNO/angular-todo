@@ -1,11 +1,11 @@
 import { taskInterface } from 'src/types/task';
-import { TaskAction, TaskActionType } from './task.actions';
+import { TaskAction, TaskActionType } from '../store/task.actions';
 
 const initialState: taskInterface[] = [
   {
     id: '1',
-    title: 'Angular State',
-    description: 'Angular State Management with NgRx',
+    title: 'Angular State Management with NgRx',
+    description: 'Chameera Dulanga',
     date: new Date,
 },
 ];
