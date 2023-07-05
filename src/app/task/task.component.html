@@ -1,0 +1,10 @@
+<h2>{{task.title}}</h2>
+<p>Description:</p>
+<p>{{task.description}}</p>
+<p>Deadline:</p>
+<div class="calendar-wrapper">
+    <p-calendar [(ngModel)]="task.date" [readonlyInput]="true" [showWeek]="true"></p-calendar>
+</div>
+<div>
+    <p-button label="Go Back" routerLink="/tasks"></p-button>
+</div>

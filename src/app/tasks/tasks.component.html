@@ -11,7 +11,9 @@
   <ng-template pTemplate="body" let-task let-i="rowIndex">
     <tr>
       <td>{{ i + 1 }}</td>
-      <td>{{ task.title }}</td>
+      <td>
+        <p-button [label]="task.title" [routerLink]="['/tasks', task.id]" [state]="task" styleClass="p-button-link"></p-button>
+      </td>
       <td>{{ task.description }}</td>
       <td>{{ task.date.toLocaleDateString() }}</td>
       <td>

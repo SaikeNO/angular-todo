@@ -20,12 +20,14 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { CalendarModule } from 'primeng/calendar';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
+import { TaskComponent } from './task/task.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TasksComponent,
-    AddComponent
+    AddComponent,
+    TaskComponent
   ],
   imports: [
     BrowserModule,
