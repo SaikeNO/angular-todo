@@ -13,7 +13,8 @@ export class TasksComponent implements OnInit  {
   constructor(private tasksService: TasksService) {}
 
   ngOnInit(): void {
-    this.taskList = this.tasksService.taskList
+    this.taskList = this.tasksService.taskList;
+    this.tasksService.getTaskEmitter.subscribe((data) => this.taskList = data);
   }
 
   onDoneClick(id: string): void{

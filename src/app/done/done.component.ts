@@ -10,14 +10,15 @@ import { TasksService } from '../services/task.service';
 })
 
 export class DoneComponent implements OnInit {
-  taskList: taskInterface[] = [];
-  constructor(private taskService: TasksService){}
+  doneTaskList: taskInterface[] = [];
+  constructor(private tasksService: TasksService){}
 
   ngOnInit(): void {
-    this.taskList = this.taskService.doneTaskList;
+    this.doneTaskList = this.tasksService.doneTaskList;
+    this.tasksService.getDoneTaskEmitter.subscribe((data) => this.doneTaskList = data);
   }
 
   onDeleteClick(id: string): void{
-    this.taskService.removeTask(id)
+    this.tasksService.removeTask(id)
   }
 }

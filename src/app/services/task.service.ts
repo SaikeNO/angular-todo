@@ -1,4 +1,5 @@
-import { EventEmitter, Injectable } from "@angular/core";
+import { Injectable } from "@angular/core";
+import { Subject } from "rxjs";
 import { taskInterface } from "src/types/task";
 
 @Injectable()
@@ -17,17 +18,24 @@ export class TasksService{
             description: 'Lorem ipsum dolor sit amet cupidatat non proident',
             date: new Date(),
             isDone: false,
-          },
+        },
     ];
 
     doneTaskList: taskInterface[] = [];
 
+    getTaskEmitter = new Subject<taskInterface[]>();
+    getDoneTaskEmitter = new Subject<taskInterface[]>();
+
     addTask(task: taskInterface):void{
         this.taskList.push(task);
+        this.getTaskEmitter.next(this.taskList);
+        this.getDoneTaskEmitter.next(this.doneTaskList);
     }
 
     removeTask(id:string):void{
         this.doneTaskList = this.doneTaskList.filter(task=>task.id !== id);
+        this.getTaskEmitter.next(this.taskList);
+        this.getDoneTaskEmitter.next(this.doneTaskList);
     }
 
     doneTask(id:string):void{
@@ -36,5 +44,8 @@ export class TasksService{
             this.doneTaskList.push(foundTask);
             this.taskList = this.taskList.filter(task => task.id !== id);
         }
+
+        this.getTaskEmitter.next(this.taskList);
+        this.getDoneTaskEmitter.next(this.doneTaskList);
     }
 }
