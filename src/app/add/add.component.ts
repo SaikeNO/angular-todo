@@ -25,7 +25,7 @@ export class AddComponent {
     }
 
     const newTask: taskInterface = {
-      id: Math.random().toString(16),
+      id: Math.floor(Math.random() * 1000).toString(16),
       title: this.title,
       description: this.description,
       date: this.date,

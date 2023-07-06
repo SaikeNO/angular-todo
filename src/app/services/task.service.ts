@@ -5,9 +5,16 @@ import { taskInterface } from "src/types/task";
 export class TasksService{
     taskList: taskInterface[] = [
         {
-            id: '1',
-            title: 'Angular State Management with NgRx',
-            description: 'Chameera Dulanga',
+            id: '532',
+            title: 'Learn Angular',
+            description: 'Lorem ipsum dolor sit amet cupidatat non proident',
+            date: new Date(),
+            isDone: false,
+        },
+        {
+            id: 'dd4',
+            title: 'Do something',
+            description: 'Lorem ipsum dolor sit amet cupidatat non proident',
             date: new Date(),
             isDone: false,
           },
