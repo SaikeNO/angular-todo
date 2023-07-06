@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
+import { BehaviorSubject } from "rxjs";
 import { taskInterface } from "src/types/task";
 
 @Injectable()
@@ -21,31 +21,25 @@ export class TasksService{
         },
     ];
 
-    doneTaskList: taskInterface[] = [];
-
-    getTaskEmitter = new Subject<taskInterface[]>();
-    getDoneTaskEmitter = new Subject<taskInterface[]>();
+    taskEmitter = new BehaviorSubject<taskInterface[]>(this.taskList);
 
     addTask(task: taskInterface):void{
         this.taskList.push(task);
-        this.getTaskEmitter.next(this.taskList);
-        this.getDoneTaskEmitter.next(this.doneTaskList);
+        this.taskEmitter.next(this.taskList);
     }
 
     removeTask(id:string):void{
-        this.doneTaskList = this.doneTaskList.filter(task=>task.id !== id);
-        this.getTaskEmitter.next(this.taskList);
-        this.getDoneTaskEmitter.next(this.doneTaskList);
+        this.taskList = this.taskList.filter(task=>task.id !== id);
+        this.taskEmitter.next(this.taskList);
     }
 
     doneTask(id:string):void{
-        const foundTask = this.taskList.find(task=>task.id === id);
-        if(foundTask){
-            this.doneTaskList.push(foundTask);
-            this.taskList = this.taskList.filter(task => task.id !== id);
-        }
+        this.taskList.forEach(task =>{
+            if(task.id === id) task.isDone = true;
+        })
 
-        this.getTaskEmitter.next(this.taskList);
-        this.getDoneTaskEmitter.next(this.doneTaskList);
+        console.log(this.taskList)
+
+        this.taskEmitter.next(this.taskList);
     }
 }

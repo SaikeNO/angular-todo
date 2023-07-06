@@ -14,8 +14,7 @@ export class DoneComponent implements OnInit {
   constructor(private tasksService: TasksService){}
 
   ngOnInit(): void {
-    this.doneTaskList = this.tasksService.doneTaskList;
-    this.tasksService.getDoneTaskEmitter.subscribe((data) => this.doneTaskList = data);
+    this.tasksService.taskEmitter.subscribe((data) => this.doneTaskList = data.filter(task=>task.isDone));
   }
 
   onDeleteClick(id: string): void{
