@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { ITask } from 'src/types/task';
 import { TasksService } from '../services/task.service';
@@ -9,8 +10,10 @@ import { TasksService } from '../services/task.service';
   styleUrls: ['./done.component.scss']
 })
 
-export class DoneComponent implements OnInit {
-  doneTaskList: ITask[] = [];
+export class DoneComponent implements OnInit, OnDestroy {
+  doneTaskList!: ITask[];
+  taskSubscription?: Subscription;
+
   constructor(private tasksService: TasksService){}
 
   ngOnInit(): void {
@@ -19,5 +22,11 @@ export class DoneComponent implements OnInit {
 
   onDeleteClick(id: string): void{
     this.tasksService.removeTask(id)
+  }
+
+  ngOnDestroy(): void {
+    if(this.taskSubscription){
+      this.taskSubscription.unsubscribe();
+    }
   }
 }
