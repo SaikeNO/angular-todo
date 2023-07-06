@@ -16,8 +16,15 @@ export class TasksService{
         this.taskEmitter$.next(this.taskList);
     }
 
-    addTask(task: ITask):void{
-        this.taskList.push(task);
+    addTask(title: string, description: string, date: Date):void{
+        const newTask: ITask = {
+            id: Math.floor(Math.random() * 1000).toString(16),
+            title,
+            description,
+            date,
+            isDone: false,
+        } 
+        this.taskList.push(newTask);
         this.raiseTaskEmitter();
     }
 
