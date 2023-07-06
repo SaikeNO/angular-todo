@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-import * as TaskActions from '../store/task.actions';
 
 import { Message } from 'primeng/api';
+import { TasksService } from '../services/task.service';
+import { taskInterface } from 'src/types/task';
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
-  styleUrls: ['./add.component.scss']
+  styleUrls: ['./add.component.scss'],
 })
 export class AddComponent {
   title: string = "";
@@ -15,7 +15,7 @@ export class AddComponent {
   messages: Message[] = [];
   isError: boolean = false;
 
-  constructor(private store: Store){}
+  constructor(private tasksService: TasksService){}
 
   onSubmit():void{
     if(!this.title){
@@ -24,17 +24,15 @@ export class AddComponent {
       return;
     }
 
-    this.store.dispatch(
-      TaskActions.addTask({
-        task:{
-          id: Math.random().toString(16),
-          title: this.title,
-          description: this.description,
-          date: this.date,
-          isDone: false,
-        }
-      })
-    );
+    const newTask: taskInterface = {
+      id: Math.random().toString(16),
+      title: this.title,
+      description: this.description,
+      date: this.date,
+      isDone: false,
+    } 
+
+    this.tasksService.addTask(newTask);
 
     this.messages = [{ severity: 'success', summary: 'Success', detail: `${this.title } added successfully` }];
     this.title = "";

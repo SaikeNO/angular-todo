@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { taskInterface } from 'src/types/task';
-import { Store } from '@ngrx/store';
-import * as TaskActions from '../store/task.actions';
-import * as fromRoot from '../store/index';
+import { TasksService } from '../services/task.service';
 
 @Component({
   selector: 'app-done',
@@ -12,15 +10,14 @@ import * as fromRoot from '../store/index';
 })
 
 export class DoneComponent implements OnInit {
-  tasks: taskInterface[] = [];
-  title: string = "";
-  constructor(private store: Store<taskInterface[]>) {}
+  taskList: taskInterface[] = [];
+  constructor(private taskService: TasksService){}
 
   ngOnInit(): void {
-    this.store.select(fromRoot.doneTasks).subscribe(tasks=>this.tasks = tasks);
+    this.taskList = this.taskService.doneTaskList;
   }
 
   onDeleteClick(id: string): void{
-    this.store.dispatch(TaskActions.removeTask({id}))
+    this.taskService.removeTask(id)
   }
 }
