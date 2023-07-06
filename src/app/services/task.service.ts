@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { taskInterface } from "src/types/task";
+import { ITask } from "src/types/task";
 
 @Injectable()
 export class TasksService{
-    taskList: taskInterface[] = [
+    taskList: ITask[] = [
         {
             id: '532',
             title: 'Learn Angular',
@@ -21,9 +21,9 @@ export class TasksService{
         },
     ];
 
-    taskEmitter = new BehaviorSubject<taskInterface[]>(this.taskList);
+    taskEmitter = new BehaviorSubject<ITask[]>(this.taskList);
 
-    addTask(task: taskInterface):void{
+    addTask(task: ITask):void{
         this.taskList.push(task);
         this.taskEmitter.next(this.taskList);
     }
@@ -37,9 +37,6 @@ export class TasksService{
         this.taskList.forEach(task =>{
             if(task.id === id) task.isDone = true;
         })
-
-        console.log(this.taskList)
-
         this.taskEmitter.next(this.taskList);
     }
 }

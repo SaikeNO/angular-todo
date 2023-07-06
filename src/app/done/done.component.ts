@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { taskInterface } from 'src/types/task';
+import { ITask } from 'src/types/task';
 import { TasksService } from '../services/task.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { TasksService } from '../services/task.service';
 })
 
 export class DoneComponent implements OnInit {
-  doneTaskList: taskInterface[] = [];
+  doneTaskList: ITask[] = [];
   constructor(private tasksService: TasksService){}
 
   ngOnInit(): void {

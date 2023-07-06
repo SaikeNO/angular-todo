@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { taskInterface } from 'src/types/task';
+import { ITask } from 'src/types/task';
 import { TasksService } from '../services/task.service';
 @Component({
   selector: 'app-tasks',
@@ -8,7 +8,7 @@ import { TasksService } from '../services/task.service';
   styleUrls: ['./tasks.component.scss'],
 })
 export class TasksComponent implements OnInit  {
-  taskList!: taskInterface[];
+  taskList!: ITask[];
 
   constructor(private tasksService: TasksService) {}
 

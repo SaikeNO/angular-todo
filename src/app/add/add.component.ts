@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { Message } from 'primeng/api';
 import { TasksService } from '../services/task.service';
-import { taskInterface } from 'src/types/task';
+import { ITask } from 'src/types/task';
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
@@ -24,7 +24,7 @@ export class AddComponent {
       return;
     }
 
-    const newTask: taskInterface = {
+    const newTask: ITask = {
       id: Math.floor(Math.random() * 1000).toString(16),
       title: this.title,
       description: this.description,
