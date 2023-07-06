@@ -23,13 +23,15 @@ import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
 import { TaskComponent } from './task/task.component';
 import { EditComponent } from './edit/edit.component';
+import { DoneComponent } from './done/done.component';
 @NgModule({
   declarations: [
     AppComponent,
     TasksComponent,
     AddComponent,
     TaskComponent,
-    EditComponent
+    EditComponent,
+    DoneComponent
   ],
   imports: [
     BrowserModule,

@@ -4,22 +4,23 @@ import { taskInterface } from 'src/types/task';
 import { Store } from '@ngrx/store';
 import * as TaskActions from '../store/task.actions';
 import * as fromRoot from '../store/index';
+
 @Component({
-  selector: 'app-tasks',
-  templateUrl: './tasks.component.html',
-  styleUrls: ['./tasks.component.scss']
+  selector: 'app-done',
+  templateUrl: './done.component.html',
+  styleUrls: ['./done.component.scss']
 })
-export class TasksComponent implements OnInit  {
+
+export class DoneComponent implements OnInit {
   tasks: taskInterface[] = [];
   title: string = "";
   constructor(private store: Store<taskInterface[]>) {}
 
   ngOnInit(): void {
-    this.store.select(fromRoot.allTasks).subscribe(tasks=> this.tasks = tasks);
+    this.store.select(fromRoot.doneTasks).subscribe(tasks=>this.tasks = tasks);
   }
 
-  onDoneClick(id: string): void{
-    this.store.dispatch(TaskActions.doneTask({id}))
-    console.log(this.tasks)
+  onDeleteClick(id: string): void{
+    this.store.dispatch(TaskActions.removeTask({id}))
   }
 }

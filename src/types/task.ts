@@ -3,4 +3,5 @@ export interface taskInterface{
     title: string,
     description: string,
     date: Date,
+    isDone: boolean,
 }

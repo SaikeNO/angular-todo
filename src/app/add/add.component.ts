@@ -31,6 +31,7 @@ export class AddComponent {
           title: this.title,
           description: this.description,
           date: this.date,
+          isDone: false,
         }
       })
     );

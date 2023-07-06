@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
         { label: 'Home', icon: PrimeIcons.HOME, routerLink: '/tasks', },
         { label: 'Add new', icon: PrimeIcons.PLUS, routerLink: '/add' },
         { label: 'Edit', icon: PrimeIcons.FILE_EDIT, routerLink: '/edit' },
+        { label: 'Done', icon: PrimeIcons.CHECK, routerLink: '/done' },
     ];
   }
 }

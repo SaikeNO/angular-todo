@@ -7,12 +7,7 @@ import { taskInterface } from 'src/types/task';
   styleUrls: ['./task.component.scss'],
 })
 export class TaskComponent implements OnInit {
-  task: taskInterface = {
-    id: '',
-    title: '',
-    description: '',
-    date: new Date(),
-  };
+  task!: taskInterface;
   ngOnInit() {
     this.task = history.state;
   }

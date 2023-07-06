@@ -1,13 +1,7 @@
 import { createSelector } from '@ngrx/store';
 import { taskInterface } from 'src/types/task';
  
-export interface AppState {
-  tasks: taskInterface[];
-}
  
-export const selectFeature = (state: AppState) => state.tasks;
  
-export const selectFeatureCount = createSelector(
-  selectFeature,
-  (state: taskInterface[]) => state
-);
+export const allTasks = createSelector(((state: taskInterface[]) => state), (tasks:taskInterface[]) => tasks);
+export const doneTasks = createSelector(((state: taskInterface[]) => state), (tasks:taskInterface[])=>tasks.filter(task=>task.isDone));

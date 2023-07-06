@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { taskInterface } from 'src/types/task';
 import { Store } from '@ngrx/store';
-import { AppState } from '../store';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -15,13 +14,13 @@ export class EditComponent {
   title!: string;
 
   constructor(
-    private store: Store<AppState>,
+    private store: Store<taskInterface[]>,
     private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
     this.store
-      .select((store) => store.tasks)
+      .select((tasks) => tasks)
       .subscribe((tasks) => (this.tasks = [...tasks]));
   }
 

@@ -1,0 +1,30 @@
+<p-table [value]="tasks" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Date</th>
+        <th>Delete</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-task let-i="rowIndex">
+      <tr>
+        <td>{{ i + 1 }}</td>
+        <td>
+          <p-button [label]="task.title" [routerLink]="['/tasks', task.id]" [state]="task" styleClass="p-button-link"></p-button>
+        </td>
+        <td>{{ task.description }}</td>
+        <td>{{ task.date.toLocaleDateString() }}</td>
+        <td>
+          <p-button
+            (onClick)="onDeleteClick(task.id)"
+            icon="pi pi-times"
+            styleClass="p-button-rounded p-button-text p-button-raised"
+            title="Delete"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  
