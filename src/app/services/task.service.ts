@@ -1,51 +1,35 @@
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
-import { taskInterface } from "src/types/task";
+import { BehaviorSubject } from "rxjs";
+import { ITask } from "src/types/task";
 
 @Injectable()
 export class TasksService{
-    taskList: taskInterface[] = [
-        {
-            id: '532',
-            title: 'Learn Angular',
-            description: 'Lorem ipsum dolor sit amet cupidatat non proident',
-            date: new Date(),
-            isDone: false,
-        },
-        {
-            id: 'dd4',
-            title: 'Do something',
-            description: 'Lorem ipsum dolor sit amet cupidatat non proident',
-            date: new Date(),
-            isDone: false,
-        },
-    ];
+    taskList: ITask[] = JSON.parse(localStorage.getItem("tasks") || `[{"id":"532","title":"Learn Angular","description":"Lorem ipsum dolor sit amet cupidatat non proident","date":"2023-07-06T11:39:08.381Z","isDone":false},{"id":"dd4","title":"Do something","description":"Lorem ipsum dolor sit amet cupidatat non proident","date":"2023-07-06T11:39:08.381Z","isDone":false}]`);
+    taskEmitter$ = new BehaviorSubject<ITask[]>(this.taskList); 
 
-    doneTaskList: taskInterface[] = [];
+    constructor(){
+        this.taskList.forEach(task=>task.date = new Date(task.date));
+    }
 
-    getTaskEmitter = new Subject<taskInterface[]>();
-    getDoneTaskEmitter = new Subject<taskInterface[]>();
+    raiseTaskEmitter(){
+        localStorage.setItem("tasks", JSON.stringify(this.taskList));
+        this.taskEmitter$.next(this.taskList);
+    }
 
-    addTask(task: taskInterface):void{
+    addTask(task: ITask):void{
         this.taskList.push(task);
-        this.getTaskEmitter.next(this.taskList);
-        this.getDoneTaskEmitter.next(this.doneTaskList);
+        this.raiseTaskEmitter();
     }
 
     removeTask(id:string):void{
-        this.doneTaskList = this.doneTaskList.filter(task=>task.id !== id);
-        this.getTaskEmitter.next(this.taskList);
-        this.getDoneTaskEmitter.next(this.doneTaskList);
+        this.taskList = this.taskList.filter(task=>task.id !== id);
+        this.raiseTaskEmitter();
     }
 
     doneTask(id:string):void{
-        const foundTask = this.taskList.find(task=>task.id === id);
-        if(foundTask){
-            this.doneTaskList.push(foundTask);
-            this.taskList = this.taskList.filter(task => task.id !== id);
-        }
-
-        this.getTaskEmitter.next(this.taskList);
-        this.getDoneTaskEmitter.next(this.doneTaskList);
+        this.taskList.forEach(task =>{
+            if(task.id === id) task.isDone = true;
+        })
+        this.raiseTaskEmitter();
     }
 }
