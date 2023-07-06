@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { map, Observable } from 'rxjs';
 
 import { ITask } from 'src/types/task';
 import { TasksService } from '../services/task.service';
@@ -8,23 +8,19 @@ import { TasksService } from '../services/task.service';
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.scss'],
 })
-export class TasksComponent implements OnInit, OnDestroy  {
-  taskList!: ITask[];
-  taskSubscription?: Subscription;
+
+export class TasksComponent implements OnInit {
+  taskList$!: Observable<ITask[]>;
 
   constructor(private tasksService: TasksService) {}
 
   ngOnInit(): void {
-    this.taskSubscription = this.tasksService.taskEmitter.subscribe((data) => this.taskList = data.filter(task=>!task.isDone));
+    this.taskList$ = this.tasksService.taskEmitter$.pipe(
+      map((tasks: ITask[]) => tasks.filter((task) => !task.isDone))
+    );
   }
 
-  onDoneClick(id: string): void{
+  onDoneClick(id: string): void {
     this.tasksService.doneTask(id);
-  }
-
-  ngOnDestroy(): void {
-    if(this.taskSubscription){
-      this.taskSubscription.unsubscribe();
-    }
   }
 }
