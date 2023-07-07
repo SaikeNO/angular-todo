@@ -21,13 +21,15 @@ import { ToastModule } from 'primeng/toast';
 import { TaskComponent } from './task/task.component';
 import { DoneComponent } from './done/done.component';
 import { TasksService } from './services/task.service';
+import { EditComponent } from './edit/edit.component';
 @NgModule({
   declarations: [
     AppComponent,
     TasksComponent,
     AddComponent,
     TaskComponent,
-    DoneComponent
+    DoneComponent,
+    EditComponent
   ],
   imports: [
     BrowserModule,

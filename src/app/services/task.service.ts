@@ -39,4 +39,14 @@ export class TasksService{
         })
         this.raiseTaskEmitter();
     }
+
+    updateTask(newTask: ITask){
+        this.taskList.forEach(task =>{
+            if(task.id === newTask.id){
+                task.title = newTask.title;
+                task.description = newTask.description
+                task.date = newTask.date;
+            }
+        })
+    }
 }
