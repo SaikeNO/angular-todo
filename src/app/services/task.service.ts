@@ -1,19 +1,35 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Observable, map } from "rxjs";
 import { ITask } from "src/types/task";
 
 @Injectable()
 export class TasksService{
-    taskList: ITask[] = JSON.parse(localStorage.getItem("tasks") || `[{"id":"532","title":"Learn Angular","description":"Lorem ipsum dolor sit amet cupidatat non proident","date":"2023-07-06T11:39:08.381Z","isDone":false},{"id":"dd4","title":"Do something","description":"Lorem ipsum dolor sit amet cupidatat non proident","date":"2023-07-06T11:39:08.381Z","isDone":false}]`);
-    taskEmitter$ = new BehaviorSubject<ITask[]>(this.taskList); 
+    initialTaskList: ITask[] = JSON.parse(localStorage.getItem("tasks") || `[{"id":"532","title":"Learn Angular","description":"Lorem ipsum dolor sit amet cupidatat non proident","date":"2023-07-06T11:39:08.381Z","isDone":false},{"id":"dd4","title":"Do something","description":"Lorem ipsum dolor sit amet cupidatat non proident","date":"2023-07-06T11:39:08.381Z","isDone":false}]`);
+    taskList$ = new BehaviorSubject<ITask[]>(this.initialTaskList); 
 
     constructor(){
-        this.taskList.forEach(task=>task.date = new Date(task.date));
+        const updatedTaskList = this.taskList$.getValue().map(task=>{
+            task.date = new Date(task.date);
+            return task;
+        });
+        this.taskList$.next(updatedTaskList);
     }
 
-    raiseTaskEmitter(){
-        localStorage.setItem("tasks", JSON.stringify(this.taskList));
-        this.taskEmitter$.next(this.taskList);
+    getTaskList():Observable<ITask[]>{
+        return this.taskList$.asObservable();
+    }
+
+    getDoneTasks():Observable<ITask[]>{
+        return this.taskList$.asObservable().pipe(map((taskList: ITask[]) => taskList.filter(task=>task.isDone)));
+    }
+
+    getUnDoneTasks():Observable<ITask[]>{
+        return this.taskList$.asObservable().pipe(map((taskList: ITask[]) => taskList.filter(task=>!task.isDone)));
+    }
+
+    updateTaskList(updatedTaskList: ITask[]):void{
+        this.taskList$.next(updatedTaskList);
+        localStorage.setItem("tasks", JSON.stringify(updatedTaskList));
     }
 
     addTask(title: string, description: string, date: Date):void{
@@ -24,29 +40,30 @@ export class TasksService{
             date,
             isDone: false,
         } 
-        this.taskList.push(newTask);
-        this.raiseTaskEmitter();
+        const updatedTaskList = [...this.taskList$.getValue(), newTask];
+        this.updateTaskList(updatedTaskList);
     }
 
     removeTask(id:string):void{
-        this.taskList = this.taskList.filter(task=>task.id !== id);
-        this.raiseTaskEmitter();
+       const updatedTaskList = this.taskList$.getValue().filter(task=>task.id !== id);
+       this.updateTaskList(updatedTaskList);
     }
 
     doneTask(id:string):void{
-        this.taskList.forEach(task =>{
+        const updatedTaskList = this.taskList$.getValue().map(task =>{
             if(task.id === id) task.isDone = true;
+            return task;
         })
-        this.raiseTaskEmitter();
+        this.updateTaskList(updatedTaskList);
     }
 
     updateTask(newTask: ITask){
-        this.taskList.forEach(task =>{
+        const updatedTaskList = this.taskList$.getValue().map(task =>{
             if(task.id === newTask.id){
-                task.title = newTask.title;
-                task.description = newTask.description
-                task.date = newTask.date;
+                task = newTask;
             }
+            return task;
         })
+        this.updateTaskList(updatedTaskList);
     }
 }

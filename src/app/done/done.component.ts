@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import { ITask } from 'src/types/task';
@@ -10,15 +10,11 @@ import { TasksService } from '../services/task.service';
   styleUrls: ['./done.component.scss'],
 })
 
-export class DoneComponent implements OnInit {
+export class DoneComponent  {
   doneTaskList$!: Observable<ITask[]>;
 
-  constructor(private tasksService: TasksService) {}
-
-  ngOnInit(): void {
-    this.doneTaskList$ = this.tasksService.taskEmitter$.pipe(
-      map((tasks: ITask[]) => tasks.filter((task) => task.isDone))
-    );
+  constructor(private tasksService: TasksService) {
+    this.doneTaskList$ = this.tasksService.getDoneTasks();
   }
 
   onDeleteClick(id: string): void {
