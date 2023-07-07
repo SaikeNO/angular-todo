@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 
 import { Message } from 'primeng/api';
 import { TasksService } from '../services/task.service';
-import { ITask } from 'src/types/task';
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
@@ -23,16 +22,7 @@ export class AddComponent {
       this.isError = true;
       return;
     }
-
-    const newTask: ITask = {
-      id: Math.floor(Math.random() * 1000).toString(16),
-      title: this.title,
-      description: this.description,
-      date: this.date,
-      isDone: false,
-    } 
-
-    this.tasksService.addTask(newTask);
+    this.tasksService.addTask(this.title, this.description, this.date);
 
     this.messages = [{ severity: 'success', summary: 'Success', detail: `${this.title } added successfully` }];
     this.title = "";

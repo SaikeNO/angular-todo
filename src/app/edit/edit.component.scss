@@ -1,0 +1,17 @@
+:host{
+    margin-top: 20px;
+    display: block;
+}
+
+.input-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input {
+    margin-right: 10px;
+}
