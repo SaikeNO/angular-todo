@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, map } from "rxjs";
+import { AddTask } from "src/types/addTask";
 import { ITask } from "src/types/task";
 
 @Injectable()
@@ -32,12 +33,12 @@ export class TasksService{
         localStorage.setItem("tasks", JSON.stringify(updatedTaskList));
     }
 
-    addTask(title: string, description: string, date: Date):void{
+    addTask(addTask:AddTask):void{
         const newTask: ITask = {
             id: Math.floor(Math.random() * 1000).toString(16),
-            title,
-            description,
-            date,
+            title: addTask.title,
+            description: addTask.description,
+            date: addTask.date,
             isDone: false,
         } 
         const updatedTaskList = [...this.taskList$.getValue(), newTask];

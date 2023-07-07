@@ -2,12 +2,16 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { TasksComponent } from './tasks/tasks.component';
 import { AddComponent } from './add/add.component';
+import { TaskComponent } from './task/task.component';
+import { DoneComponent } from './done/done.component';
+import { TasksService } from './services/task.service';
 
 import { ButtonModule } from 'primeng/button';
 import { TabMenuModule } from 'primeng/tabmenu';
@@ -18,10 +22,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
-import { TaskComponent } from './task/task.component';
-import { DoneComponent } from './done/done.component';
-import { TasksService } from './services/task.service';
-import { EditComponent } from './edit/edit.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,11 +30,11 @@ import { EditComponent } from './edit/edit.component';
     AddComponent,
     TaskComponent,
     DoneComponent,
-    EditComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     ButtonModule,
     TabMenuModule,
     TableModule,

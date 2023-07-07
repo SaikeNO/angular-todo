@@ -1,37 +1,94 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Message } from 'primeng/api';
 import { TasksService } from '../services/task.service';
+import { AddTask } from 'src/types/addTask';
+import { ITask } from 'src/types/task';
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.scss'],
 })
-export class AddComponent {
-  title: string = "";
-  description: string = "";
-  date: Date = new Date();
+export class AddComponent implements OnInit {
   messages: Message[] = [];
-  isError: boolean = false;
+  task!: ITask;
+  isEditMode = false;
+  isSubmitted = false;
+  form = this.fb.group({
+    title: ['', Validators.required],
+    description: '',
+    date: [new Date(), Validators.required],
+  });
 
-  constructor(private tasksService: TasksService){}
+  constructor(private tasksService: TasksService, private fb: FormBuilder) {}
 
-  onSubmit():void{
-    if(!this.title){
-      this.messages = [{ severity: 'error', summary: 'Error', detail: 'One or more fields are required' }];
-      this.isError = true;
-      return;
+  ngOnInit() {
+    this.task = history.state;
+
+    if (this.task.title) {
+      this.form.setValue({
+        title: this.task.title,
+        description: this.task.description,
+        date: this.task.date,
+      });
+      this.isEditMode = true;
     }
-    this.tasksService.addTask(this.title, this.description, this.date);
-
-    this.messages = [{ severity: 'success', summary: 'Success', detail: `${this.title } added successfully` }];
-    this.title = "";
-    this.description = "";
-    this.date = new Date();
   }
 
-  onInputChange():void{
+  onSubmit(): void {
+    if (this.form.invalid) {
+      this.messages = [
+        {
+          severity: 'error',
+          summary: 'Error',
+          detail: 'One or more fields are required',
+        },
+      ];
+      this.isSubmitted = true;
+      return;
+    }
+
+    this.messages = [
+      {
+        severity: 'success',
+        summary: 'Success',
+        detail: `${this.form.value.title} ${
+          this.isEditMode ? 'updated' : 'added'
+        } successfully`,
+      },
+    ];
+    if (this.isEditMode) {
+      this.task.title = this.form.value.title ?? '';
+      this.task.description = this.form.value.description ?? '';
+      this.task.date = this.form.value.date ?? new Date();
+      this.tasksService.updateTask(this.task);
+    } else {
+      const newTask: AddTask = {
+        title: this.form.value.title ?? '',
+        description: this.form.value.description ?? '',
+        date: this.form.value.date ?? new Date(),
+      };
+
+      this.tasksService.addTask(newTask);
+      this.form.reset({
+        title: '',
+        description: '',
+        date: new Date(),
+      });
+    }
+  }
+
+  isError(): boolean | undefined {
+    return (
+      this.form.get('title')?.invalid &&
+      (this.form.get('title')?.dirty ||
+        this.form.get('title')?.touched ||
+        this.isSubmitted)
+    );
+  }
+
+  onInputChange(): void {
     this.messages = [];
-    this.isError = false;
+    this.isSubmitted = false;
   }
 }
