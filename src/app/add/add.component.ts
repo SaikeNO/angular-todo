@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Message } from 'primeng/api';
 import { TasksService } from '../services/task.service';
-import { AddTask } from 'src/types/addTask';
 import { Task } from 'src/types/task';
 @Component({
   selector: 'app-add',
@@ -64,13 +63,15 @@ export class AddComponent implements OnInit {
       this.task.date = this.form.value.date ?? new Date();
       this.tasksService.updateTask(this.task);
     } else {
-      const newTask: AddTask = {
+      const newTask: Task = {
         title: this.form.value.title ?? '',
         description: this.form.value.description ?? '',
         date: this.form.value.date ?? new Date(),
+        isDone: false,
       };
 
       this.tasksService.addTask(newTask);
+
       this.form.reset();
     }
   }

@@ -14,13 +14,13 @@
       <tr>
         <td>{{ i + 1 }}</td>
         <td>
-          <p-button [label]="task.title" [routerLink]="['/tasks', task.id]" [state]="task" styleClass="p-button-link"></p-button>
+          <p-button [label]="task.title" [routerLink]="['/tasks', task._id]" [state]="task" styleClass="p-button-link"></p-button>
         </td>
         <td>{{ task.description }}</td>
         <td>{{ task.date.toLocaleDateString() }}</td>
         <td>
           <p-button
-            [routerLink]="['/tasks/' + task.id + '/edit']" [state]="task"
+            [routerLink]="['/tasks/' + task._id + '/edit']" [state]="task"
             icon="pi pi-file-edit"
             styleClass="p-button-rounded p-button-text p-button-raised"
             title="Edit"
@@ -28,7 +28,7 @@
         </td>
         <td>
           <p-button
-            (onClick)="onDoneClick(task.id)"
+            (onClick)="onDoneClick(task._id)"
             icon="pi pi-check"
             styleClass="p-button-rounded p-button-text p-button-raised"
             title="Done"

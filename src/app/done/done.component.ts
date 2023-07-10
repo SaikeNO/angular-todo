@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
 
 import { Task } from 'src/types/task';
 import { TasksService } from '../services/task.service';
@@ -11,13 +10,17 @@ import { TasksService } from '../services/task.service';
 })
 
 export class DoneComponent  {
-  doneTaskList$!: Observable<Task[]>;
+  doneTaskList!:Task[];
 
   constructor(private tasksService: TasksService) {
-    this.doneTaskList$ = this.tasksService.getDoneTasks();
+    this.tasksService.getDoneTasks().subscribe(taskList=>{
+      this.doneTaskList = taskList;
+    });
   }
 
   onDeleteClick(id: string): void {
-    this.tasksService.removeTask(id);
+    this.tasksService.removeTask(id).subscribe(() => {
+      this.doneTaskList = this.doneTaskList.filter(task=>task._id !==id);
+    })
   }
 }

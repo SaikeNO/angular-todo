@@ -1,70 +1,44 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, map } from "rxjs";
-import { AddTask } from "src/types/addTask";
+import { HttpClient } from "@angular/common/http";
+import { Observable, map, take } from "rxjs";
 import { Task } from "src/types/task";
+import { environment } from "src/environments/environment.development";
 
 @Injectable()
 export class TasksService{
-    initialTaskList: Task[] = JSON.parse(localStorage.getItem("tasks") || `[{"id":"532","title":"Learn Angular","description":"Lorem ipsum dolor sit amet cupidatat non proident","date":"2023-07-06T11:39:08.381Z","isDone":false},{"id":"dd4","title":"Do something","description":"Lorem ipsum dolor sit amet cupidatat non proident","date":"2023-07-06T11:39:08.381Z","isDone":false}]`);
-    taskList$ = new BehaviorSubject<Task[]>(this.initialTaskList); 
+    constructor(private httpClient: HttpClient){}
 
-    constructor(){
-        const updatedTaskList = this.taskList$.getValue().map(task=>{
+    private getTasks():Observable<Task[]>{
+        return this.httpClient.get<Task[]>(environment.apiUrl).pipe(map(taskList=>taskList.map(task=>{
             task.date = new Date(task.date);
             return task;
-        });
-        this.taskList$.next(updatedTaskList);
-    }
-
-    getTaskList():Observable<Task[]>{
-        return this.taskList$.asObservable();
+        })))
     }
 
     getDoneTasks():Observable<Task[]>{
-        return this.taskList$.asObservable().pipe(map((taskList: Task[]) => taskList.filter(task=>task.isDone)));
+        return this.getTasks().pipe(map(taskList=>taskList.filter(task=>task.isDone)));
     }
 
     getUnDoneTasks():Observable<Task[]>{
-        return this.taskList$.asObservable().pipe(map((taskList: Task[]) => taskList.filter(task=>!task.isDone)));
+        return this.getTasks().pipe(map(taskList=>taskList.filter(task=>!task.isDone)));
     }
 
-    updateTaskList(updatedTaskList: Task[]):void{
-        this.taskList$.next(updatedTaskList);
-        localStorage.setItem("tasks", JSON.stringify(updatedTaskList));
+    addTask(newTask:Task){
+        this.httpClient.post(environment.apiUrl, newTask).subscribe();
     }
 
-    addTask(addTask:AddTask):void{
-        const newTask: Task = {
-            id: Math.floor(Math.random() * 1000).toString(16),
-            title: addTask.title,
-            description: addTask.description,
-            date: addTask.date,
-            isDone: false,
-        } 
-        const updatedTaskList = [...this.taskList$.getValue(), newTask];
-        this.updateTaskList(updatedTaskList);
+    removeTask(id:string){
+        return this.httpClient.delete(`${environment.apiUrl}/${id}`);
     }
 
-    removeTask(id:string):void{
-       const updatedTaskList = this.taskList$.getValue().filter(task=>task.id !== id);
-       this.updateTaskList(updatedTaskList);
+    updateTask({ _id, title, description, date, isDone }: Task){
+        this.httpClient.put(`${environment.apiUrl}/${_id}`, {title, description, date, isDone}).subscribe()
     }
 
-    doneTask(id:string):void{
-        const updatedTaskList = this.taskList$.getValue().map(task =>{
-            if(task.id === id) task.isDone = true;
-            return task;
+    doneTask(id:string){
+        this.httpClient.get<Task>(`${environment.apiUrl}/${id}`).pipe(take(1)).subscribe(task => {
+            task.isDone = true;
+            this.updateTask(task)
         })
-        this.updateTaskList(updatedTaskList);
-    }
-
-    updateTask(newTask: Task){
-        const updatedTaskList = this.taskList$.getValue().map(task =>{
-            if(task.id === newTask.id){
-                task = newTask;
-            }
-            return task;
-        })
-        this.updateTaskList(updatedTaskList);
     }
 }
