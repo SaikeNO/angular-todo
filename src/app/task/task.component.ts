@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ITask } from 'src/types/task';
+import { Task } from 'src/types/task';
 
 @Component({
   selector: 'app-task',
@@ -7,7 +7,7 @@ import { ITask } from 'src/types/task';
   styleUrls: ['./task.component.scss'],
 })
 export class TaskComponent implements OnInit {
-  task!: ITask;
+  task!: Task;
   ngOnInit() {
     this.task = history.state;
   }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import { ITask } from 'src/types/task';
+import { Task } from 'src/types/task';
 import { TasksService } from '../services/task.service';
 @Component({
   selector: 'app-tasks',
@@ -10,7 +10,7 @@ import { TasksService } from '../services/task.service';
 })
 
 export class TasksComponent {
-  taskList$!: Observable<ITask[]>;
+  taskList$!: Observable<Task[]>;
 
   constructor(private tasksService: TasksService) {
     this.taskList$ = this.tasksService.getUnDoneTasks();

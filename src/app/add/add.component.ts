@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Message } from 'primeng/api';
 import { TasksService } from '../services/task.service';
 import { AddTask } from 'src/types/addTask';
-import { ITask } from 'src/types/task';
+import { Task } from 'src/types/task';
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
@@ -11,10 +11,10 @@ import { ITask } from 'src/types/task';
 })
 export class AddComponent implements OnInit {
   messages: Message[] = [];
-  task!: ITask;
+  task!: Task;
   isEditMode = false;
   isSubmitted = false;
-  form = this.fb.group({
+  form = this.fb.nonNullable.group({
     title: ['', Validators.required],
     description: '',
     date: [new Date(), Validators.required],
@@ -25,6 +25,7 @@ export class AddComponent implements OnInit {
   ngOnInit() {
     this.task = history.state;
 
+    // check if task is passed to state
     if (this.task.title) {
       this.form.setValue({
         title: this.task.title,
@@ -70,11 +71,7 @@ export class AddComponent implements OnInit {
       };
 
       this.tasksService.addTask(newTask);
-      this.form.reset({
-        title: '',
-        description: '',
-        date: new Date(),
-      });
+      this.form.reset();
     }
   }
 

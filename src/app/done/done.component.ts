@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 
-import { ITask } from 'src/types/task';
+import { Task } from 'src/types/task';
 import { TasksService } from '../services/task.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { TasksService } from '../services/task.service';
 })
 
 export class DoneComponent  {
-  doneTaskList$!: Observable<ITask[]>;
+  doneTaskList$!: Observable<Task[]>;
 
   constructor(private tasksService: TasksService) {
     this.doneTaskList$ = this.tasksService.getDoneTasks();
