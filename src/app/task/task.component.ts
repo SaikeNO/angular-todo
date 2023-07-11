@@ -3,6 +3,7 @@ import { Task } from 'src/types/task';
 import { Observable } from 'rxjs';
 import { TasksService } from '../services/task.service';
 import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-task',
@@ -12,12 +13,16 @@ import { ActivatedRoute } from '@angular/router';
 export class TaskComponent implements OnInit {
   task$!: Observable<Task>;
 
-  constructor(private tasksService: TasksService, private route: ActivatedRoute){}
+  constructor(private tasksService: TasksService, private route: ActivatedRoute, private location: Location){}
 
   ngOnInit() {
     const taskId = this.route.snapshot.paramMap.get('id');
     if(!taskId) return;
 
     this.task$ = this.tasksService.getTaskById(taskId);
+  }
+
+  onBack(): void{
+    this.location.back();
   }
 }

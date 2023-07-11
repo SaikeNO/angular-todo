@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
       this.primengConfig.ripple = true;
 
       this.menuItems = [
-        { label: 'Home', icon: PrimeIcons.HOME, routerLink: '/tasks' },
+        { label: 'Home', icon: PrimeIcons.HOME, routerLink: '/tasks',  routerLinkActiveOptions:{ exact: true }  },
         { label: 'Add new', icon: PrimeIcons.PLUS, routerLink: '/tasks/add' },
         { label: 'Done', icon: PrimeIcons.CHECK, routerLink: '/tasks/done' },
     ];
