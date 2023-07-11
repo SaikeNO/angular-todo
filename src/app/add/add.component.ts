@@ -61,6 +61,7 @@ export class AddComponent implements OnInit {
       this.task.title = this.form.value.title ?? '';
       this.task.description = this.form.value.description ?? '';
       this.task.date = this.form.value.date ?? new Date();
+      
       this.tasksService.updateTask(this.task);
     } else {
       const newTask: Task = {

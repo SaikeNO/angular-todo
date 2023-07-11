@@ -1,4 +1,4 @@
-<ng-container *ngIf="doneTaskList">
+<ng-container *ngIf="doneTaskList$ | async as doneTaskList">
   <p-table [value]="doneTaskList" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
       <tr>

@@ -1,44 +1,70 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { Observable, map, take } from "rxjs";
-import { Task } from "src/types/task";
-import { environment } from "src/environments/environment.development";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { Task } from 'src/types/task';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable()
-export class TasksService{
-    constructor(private httpClient: HttpClient){}
+export class TasksService {
+  constructor(private httpClient: HttpClient) {}
+  taskList$ = new BehaviorSubject<Task[]>([]);
 
-    private getTasks():Observable<Task[]>{
-        return this.httpClient.get<Task[]>(environment.apiUrl).pipe(map(taskList=>taskList.map(task=>{
+  getTasks(): Observable<Task[]> {
+    this.httpClient
+      .get<Task[]>(environment.apiUrl)
+      .pipe(
+        map((taskList) =>
+          taskList.map((task) => {
             task.date = new Date(task.date);
             return task;
-        })))
-    }
+          })
+        ),
+        tap((taskList) => this.taskList$.next(taskList))
+      )
+      .subscribe();
 
-    getDoneTasks():Observable<Task[]>{
-        return this.getTasks().pipe(map(taskList=>taskList.filter(task=>task.isDone)));
-    }
+    return this.taskList$.asObservable();
+  }
 
-    getUnDoneTasks():Observable<Task[]>{
-        return this.getTasks().pipe(map(taskList=>taskList.filter(task=>!task.isDone)));
-    }
+  getDoneTasks(): Observable<Task[]> {
+    return this.getTasks().pipe(
+      map((taskList) => taskList.filter((task) => task.isDone))
+    );
+  }
 
-    addTask(newTask:Task){
-        this.httpClient.post(environment.apiUrl, newTask).subscribe();
-    }
+  getUnDoneTasks(): Observable<Task[]> {
+    return this.getTasks().pipe(
+      map((taskList) => taskList.filter((task) => !task.isDone))
+    );
+  }
 
-    removeTask(id:string){
-        return this.httpClient.delete(`${environment.apiUrl}/${id}`);
-    }
+  addTask(newTask: Task) {
+    this.httpClient.post(environment.apiUrl, newTask).subscribe();
+  }
 
-    updateTask({ _id, title, description, date, isDone }: Task){
-        this.httpClient.put(`${environment.apiUrl}/${_id}`, {title, description, date, isDone}).subscribe()
-    }
+  updateTask({ _id, title, description, date, isDone }: Task): void {
+    this.httpClient.put(`${environment.apiUrl}/${_id}`, { title, description, date, isDone })
+      .subscribe();
+  }
 
-    doneTask(id:string){
-        this.httpClient.get<Task>(`${environment.apiUrl}/${id}`).pipe(take(1)).subscribe(task => {
-            task.isDone = true;
-            this.updateTask(task)
-        })
-    }
+  removeTask(id: string): void {
+    this.httpClient.delete(`${environment.apiUrl}/${id}`).subscribe(() => {
+        const updateTaskList = this.taskList$.getValue().filter(task => task._id !== id);
+        this.taskList$.next(updateTaskList);
+    })
+  }
+
+  doneTask(id: string): void {
+    this.httpClient.put(`${environment.apiUrl}/${id}`, { isDone: true }).subscribe(() =>{ //! Obsługa błędu
+        const updateTaskList = this.taskList$.getValue().map(task => {
+            if(task._id === id){
+                task.isDone = true;
+            }  
+            return task;
+        });
+
+        this.taskList$.next(updateTaskList);
+        //!Zrobić toast z wykonanym zadaniem
+    });
+  }
 }
