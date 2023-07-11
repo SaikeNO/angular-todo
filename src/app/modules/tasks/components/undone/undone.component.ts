@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { TasksService } from '../services/task.service';
+import { TasksService } from '../../tasks.service';
 import { Dictionary } from 'src/types/dictionary';
 @Component({
-  selector: 'app-tasks',
-  templateUrl: './tasks.component.html',
-  styleUrls: ['./tasks.component.scss'],
+  selector: 'app-undone',
+  templateUrl: './undone.component.html',
+  styleUrls: ['./undone.component.scss'],
 })
 
-export class TasksComponent {
+export class UndoneComponent {
   dictionaryList$!: Observable<Dictionary[]>;
 
   constructor(private tasksService: TasksService) {

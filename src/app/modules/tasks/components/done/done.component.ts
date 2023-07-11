@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { TasksService } from '../services/task.service';
+import { TasksService } from '../../tasks.service';
 import { Observable } from 'rxjs';
 import { Dictionary } from 'src/types/dictionary';
 

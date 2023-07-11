@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Message } from 'primeng/api';
-import { TasksService } from '../services/task.service';
+import { TasksService } from '../../tasks.service';
 import { Task } from 'src/types/task';
 import { ActivatedRoute } from '@angular/router';
 @Component({

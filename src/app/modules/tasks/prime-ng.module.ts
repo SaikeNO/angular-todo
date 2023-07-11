@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 import { ButtonModule } from 'primeng/button';
 import { TabMenuModule } from 'primeng/tabmenu';
@@ -25,8 +24,6 @@ import { ToastModule } from 'primeng/toast';
     MessagesModule,
     MessageModule,
     ToastModule,
-    BrowserModule,
-    BrowserAnimationsModule,
   ],
   exports: [
     ButtonModule,
@@ -37,9 +34,7 @@ import { ToastModule } from 'primeng/toast';
     CalendarModule,
     MessagesModule,
     MessageModule,
-    ToastModule, 
-    BrowserModule,
-    BrowserAnimationsModule,
+    ToastModule,
   ]
 })
 export class PrimeNgModule { }

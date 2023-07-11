@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Task } from 'src/types/task';
 import { Observable } from 'rxjs';
-import { TasksService } from '../services/task.service';
+import { TasksService } from '../../tasks.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
