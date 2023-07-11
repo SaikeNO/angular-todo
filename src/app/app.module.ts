@@ -23,6 +23,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ToastModule } from 'primeng/toast';
     AddComponent,
     TaskComponent,
     DoneComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,

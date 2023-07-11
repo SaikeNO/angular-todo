@@ -4,6 +4,7 @@ import { TasksComponent } from './tasks/tasks.component';
 import { TaskComponent } from './task/task.component';
 import { AddComponent } from './add/add.component';
 import { DoneComponent } from './done/done.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
   { path: 'tasks', component: TasksComponent },
@@ -12,7 +13,7 @@ const routes: Routes = [
   { path: 'tasks/:id', component: TaskComponent },
   { path: 'tasks/:id/edit', component: AddComponent },
   { path: '',   redirectTo: '/tasks', pathMatch: 'full' },
-  { path: '**', redirectTo: '/tasks' },
+  {path: '**', component: PageNotFoundComponent},
 ];
 
 @NgModule({
