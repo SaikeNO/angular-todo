@@ -5,6 +5,7 @@ import { TaskComponent } from './components/task/task.component';
 import { AddComponent } from './components/add/add.component';
 import { DoneComponent } from './components/done/done.component';
 import { UndoneComponent } from './components/undone/undone.component';
+import { taskGuard } from 'src/app/guard/task.guard';
 
 const routes: Routes = [
   {
@@ -14,8 +15,8 @@ const routes: Routes = [
       { path: 'undone', component: UndoneComponent },
       { path: 'add', component: AddComponent },
       { path: 'done', component: DoneComponent },
-      { path: ':id', component: TaskComponent },
-      { path: ':id/edit', component: AddComponent },
+      { path: ':id', component: TaskComponent, canActivate: [taskGuard] },
+      { path: ':id/edit', component: AddComponent, canActivate: [taskGuard] },
     ],
   },
 ];
