@@ -10,13 +10,14 @@ export class AppComponent implements OnInit {
   menuItems: MenuItem[] | undefined;
 
   constructor(private primengConfig: PrimeNGConfig) {}
+
   ngOnInit() {
       this.primengConfig.ripple = true;
 
       this.menuItems = [
         { label: 'Home', icon: PrimeIcons.HOME, routerLink: '/tasks' },
-        { label: 'Add new', icon: PrimeIcons.PLUS, routerLink: '/add' },
-        { label: 'Done', icon: PrimeIcons.CHECK, routerLink: '/done' },
+        { label: 'Add new', icon: PrimeIcons.PLUS, routerLink: '/tasks/add' },
+        { label: 'Done', icon: PrimeIcons.CHECK, routerLink: '/tasks/done' },
     ];
   }
 }

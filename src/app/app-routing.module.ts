@@ -7,10 +7,10 @@ import { DoneComponent } from './done/done.component';
 
 const routes: Routes = [
   { path: 'tasks', component: TasksComponent },
+  { path: 'tasks/add', component: AddComponent },
+  { path: 'tasks/done', component: DoneComponent },
   { path: 'tasks/:id', component: TaskComponent },
   { path: 'tasks/:id/edit', component: AddComponent },
-  { path: 'add', component: AddComponent },
-  { path: 'done', component: DoneComponent },
   { path: '',   redirectTo: '/tasks', pathMatch: 'full' },
   { path: '**', redirectTo: '/tasks' },
 ];

@@ -1,10 +1,9 @@
-<ng-container *ngIf="doneTaskList$ | async as doneTaskList">
+<ng-container *ngIf="doneDictionaryList$ | async as doneTaskList">
   <p-table [value]="doneTaskList" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
       <tr>
         <th>ID</th>
         <th>Title</th>
-        <th>Description</th>
         <th>Date</th>
         <th>Delete</th>
       </tr>
@@ -14,17 +13,16 @@
         <td>{{ i + 1 }}</td>
         <td>
           <p-button
-            [label]="task.title"
-            [routerLink]="['/tasks', task._id]"
+            [label]="task.label"
+            [routerLink]="['/tasks', task.id]"
             [state]="task"
             styleClass="p-button-link"
           ></p-button>
         </td>
-        <td>{{ task.description }}</td>
         <td>{{ task.date.toLocaleDateString() }}</td>
         <td>
           <p-button
-            (onClick)="onDeleteClick(task._id)"
+            (onClick)="onDeleteClick(task.id)"
             icon="pi pi-times"
             styleClass="p-button-rounded p-button-text p-button-raised"
             title="Delete"

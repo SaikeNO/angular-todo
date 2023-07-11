@@ -22,17 +22,17 @@ export class AddComponent implements OnInit {
   constructor(private tasksService: TasksService, private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.task = history.state;
+    if (!history.state.id) return;
 
-    // check if task is passed to state
-    if (this.task.title) {
+    this.tasksService.getTaskById(history.state.id).subscribe((task) => {
       this.form.setValue({
-        title: this.task.title,
-        description: this.task.description,
-        date: this.task.date,
+        title: task.title,
+        description: task.description,
+        date: task.date,
       });
+      this.task = task;
       this.isEditMode = true;
-    }
+    });
   }
 
   onSubmit(): void {
@@ -61,7 +61,7 @@ export class AddComponent implements OnInit {
       this.task.title = this.form.value.title ?? '';
       this.task.description = this.form.value.description ?? '';
       this.task.date = this.form.value.date ?? new Date();
-      
+
       this.tasksService.updateTask(this.task);
     } else {
       const newTask: Task = {

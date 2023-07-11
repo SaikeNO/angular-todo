@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Task } from 'src/types/task';
 import { TasksService } from '../services/task.service';
+import { Dictionary } from 'src/types/dictionary';
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
@@ -10,10 +10,10 @@ import { TasksService } from '../services/task.service';
 })
 
 export class TasksComponent {
-  taskList$!: Observable<Task[]>;
+  dictionaryList$!: Observable<Dictionary[]>;
 
   constructor(private tasksService: TasksService) {
-    this.taskList$ = this.tasksService.getUnDoneTasks();
+    this.dictionaryList$ = this.tasksService.getUnDoneDictionaries();
   }
 
   onDoneClick(id: string): void {

@@ -1,10 +1,9 @@
-<ng-container *ngIf="taskList$ | async as taskList">
+<ng-container *ngIf="dictionaryList$ | async as taskList">
   <p-table [value]="taskList" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
       <tr>
         <th>ID</th>
         <th>Title</th>
-        <th>Description</th>
         <th>Date</th>
         <th width="2%">Edit</th>
         <th width="2%">Done</th>
@@ -14,13 +13,18 @@
       <tr>
         <td>{{ i + 1 }}</td>
         <td>
-          <p-button [label]="task.title" [routerLink]="['/tasks', task._id]" [state]="task" styleClass="p-button-link"></p-button>
+          <p-button
+            [label]="task.label"
+            [routerLink]="['/tasks', task.id]"
+            [state]="{id: task.id}"
+            styleClass="p-button-link"
+          ></p-button>
         </td>
-        <td>{{ task.description }}</td>
         <td>{{ task.date.toLocaleDateString() }}</td>
         <td>
           <p-button
-            [routerLink]="['/tasks/' + task._id + '/edit']" [state]="task"
+            [routerLink]="['/tasks/' + task.id + '/edit']"
+            [state]="{id: task.id}"
             icon="pi pi-file-edit"
             styleClass="p-button-rounded p-button-text p-button-raised"
             title="Edit"
@@ -28,7 +32,7 @@
         </td>
         <td>
           <p-button
-            (onClick)="onDoneClick(task._id)"
+            (onClick)="onDoneClick(task.id)"
             icon="pi pi-check"
             styleClass="p-button-rounded p-button-text p-button-raised"
             title="Done"
