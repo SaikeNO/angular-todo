@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Message } from 'primeng/api';
 import { TasksService } from '../services/task.service';
 import { Task } from 'src/types/task';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
@@ -19,12 +20,18 @@ export class AddComponent implements OnInit {
     date: [new Date(), Validators.required],
   });
 
-  constructor(private tasksService: TasksService, private fb: FormBuilder) {}
+  constructor(
+    private tasksService: TasksService,
+    private fb: FormBuilder,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    if (!history.state.id) return;
+    const taskId = this.route.snapshot.paramMap.get('id');
 
-    this.tasksService.getTaskById(history.state.id).subscribe((task) => {
+    if (!taskId) return;
+
+    this.tasksService.getTaskById(taskId).subscribe((task) => {
       this.form.setValue({
         title: task.title,
         description: task.description,

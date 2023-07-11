@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Task } from 'src/types/task';
 import { Observable } from 'rxjs';
 import { TasksService } from '../services/task.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-task',
@@ -11,9 +12,12 @@ import { TasksService } from '../services/task.service';
 export class TaskComponent implements OnInit {
   task$!: Observable<Task>;
 
-  constructor(private tasksService: TasksService){}
+  constructor(private tasksService: TasksService, private route: ActivatedRoute){}
 
   ngOnInit() {
-    this.task$ = this.tasksService.getTaskById(history.state.id);    
+    const taskId = this.route.snapshot.paramMap.get('id');
+    if(!taskId) return;
+
+    this.task$ = this.tasksService.getTaskById(taskId);
   }
 }
