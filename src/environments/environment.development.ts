@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    apiUrl: 'https://crudcrud.com/api/f76a6c64a349415f966a2f5843472017/todo',
+    apiUrl: 'https://crudcrud.com/api/7520b773104a44a98c0d4a3bfe778542/todo',
 };

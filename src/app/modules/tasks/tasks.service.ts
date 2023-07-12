@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, map, tap } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, catchError, map, throwError } from 'rxjs';
 import { Task } from 'src/types/task';
 import { environment } from 'src/environments/environment.development';
 import { Dictionary } from 'src/types/dictionary';
@@ -8,19 +8,22 @@ import { Dictionary } from 'src/types/dictionary';
 @Injectable()
 export class TasksService {
   taskList$ = new BehaviorSubject<Task[]>([]);
-  
+
   constructor(private httpClient: HttpClient) {}
 
   private getTasks(): Observable<Task[]> {
     this.httpClient
       .get<Task[]>(environment.apiUrl)
       .pipe(
+        catchError((reponse:HttpErrorResponse) => {
+          this.taskList$.error(reponse);
+          return throwError(() => new Error(reponse.message));
+        }),
         map((taskList) =>
           taskList.map((task) => ({ ...task, date: new Date(task.date) }))
-        ),
-        tap((taskList) => this.taskList$.next(taskList))
+        )
       )
-      .subscribe();
+      .subscribe((taskList) => this.taskList$.next(taskList));
 
     return this.taskList$.asObservable();
   }
@@ -55,14 +58,17 @@ export class TasksService {
     );
   }
 
-  addTask(newTask: Task): void {
-    this.httpClient.post(environment.apiUrl, newTask).subscribe();
+  addTask(newTask: Task) {
+    return this.httpClient.post(environment.apiUrl, newTask);
   }
 
-  updateTask({ _id, title, description, date, isDone }: Task): void {
-    this.httpClient
-      .put(`${environment.apiUrl}/${_id}`, { title, description, date, isDone })
-      .subscribe();
+  updateTask({ _id, title, description, date, isDone }: Task) {
+    return this.httpClient.put(`${environment.apiUrl}/${_id}`, {
+      title,
+      description,
+      date,
+      isDone,
+    });
   }
 
   removeTask(id: string): void {
