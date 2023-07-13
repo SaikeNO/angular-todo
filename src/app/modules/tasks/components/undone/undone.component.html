@@ -20,7 +20,7 @@
             styleClass="p-button-link"
           ></p-button>
         </td>
-        <td>{{ task.date.toLocaleDateString() }}</td>
+        <td>{{ task.date | date }}</td>
         <td>
           <p-button
             [routerLink]="['/tasks/' + task.id + '/edit']"
