@@ -1,30 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 import {
   FormControl,
   FormGroup,
   NonNullableFormBuilder,
   Validators,
 } from '@angular/forms';
-import { Message } from 'primeng/api';
-import { TasksService } from '../../tasks.service';
-import { Task } from 'src/types/task';
-import { ActivatedRoute } from '@angular/router';
-import { catchError, throwError } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs';
 
-interface Form
-  extends FormGroup<{
-    title: FormControl<string>;
-    description: FormControl<string>;
-    date: FormControl<Date>;
-  }> {}
+import { Task } from 'src/types/task';
+import { Message } from 'src/app/shared/message/message';
+import { TasksService } from '../../tasks.service';
+
+interface Form extends FormGroup<{
+  title: FormControl<string>;
+  description: FormControl<string>;
+  date: FormControl<Date>;
+}> {}
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.scss'],
 })
-export class AddComponent implements OnInit {
-  messages: Message[] = [];
+export class AddComponent extends Message {
   task!: Task;
   isEditMode = false;
   isSubmitted = false;
@@ -34,13 +33,8 @@ export class AddComponent implements OnInit {
     date: [new Date(), Validators.required],
   });
 
-  constructor(
-    private tasksService: TasksService,
-    private fb: NonNullableFormBuilder,
-    private route: ActivatedRoute
-  ) {}
-
-  ngOnInit() {
+  constructor(private tasksService: TasksService,private fb: NonNullableFormBuilder,private route: ActivatedRoute) {
+    super();
     const taskId = this.route.snapshot.paramMap.get('id');
 
     if (!taskId) return;
@@ -90,17 +84,6 @@ export class AddComponent implements OnInit {
   onInputChange(): void {
     this.messages = [];
     this.isSubmitted = false;
-  }
-
-  handleError(error = { statusText: 'One or more fields are required' }) {
-    this.messages = [
-      {
-        severity: 'error',
-        summary: 'Error',
-        detail: error.statusText,
-      },
-    ];
-    return throwError(() => new Error(error.statusText));
   }
 
   handleSuccess() {

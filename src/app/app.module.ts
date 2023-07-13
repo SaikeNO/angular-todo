@@ -17,7 +17,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
     AppRoutingModule,
     TabMenuModule,
     BrowserModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

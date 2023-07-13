@@ -1,31 +1,21 @@
 import { Component } from '@angular/core';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError } from 'rxjs';
 
 import { TasksService } from '../../tasks.service';
 import { Dictionary } from 'src/types/dictionary';
-import { Message } from 'primeng/api';
+import { Message } from 'src/app/shared/message/message';
 @Component({
   selector: 'app-undone',
   templateUrl: './undone.component.html',
   styleUrls: ['./undone.component.scss'],
 })
-export class UndoneComponent {
-  dictionaryList$!: Observable<Dictionary[]>;
-  messages: Message[] = [];
+export class UndoneComponent extends Message {
+  dictionaryList$: Observable<Dictionary[]> = this.tasksService
+    .getUnDoneDictionaries()
+    .pipe(catchError((error) => this.handleError(error)));
 
   constructor(private tasksService: TasksService) {
-    this.dictionaryList$ = this.tasksService.getUnDoneDictionaries().pipe(
-      catchError((error) => {
-        this.messages = [
-          {
-            severity: 'error',
-            summary: 'Error',
-            detail: error.statusText,
-          },
-        ];
-        return of([]);
-      })
-    );
+    super();
   }
 
   onDoneClick(id: string): void {

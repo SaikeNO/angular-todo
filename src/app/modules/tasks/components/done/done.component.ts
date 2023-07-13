@@ -1,33 +1,22 @@
 import { Component } from '@angular/core';
 
 import { TasksService } from '../../tasks.service';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError } from 'rxjs';
 import { Dictionary } from 'src/types/dictionary';
-import { Message } from 'primeng/api';
+import { Message } from 'src/app/shared/message/message';
 
 @Component({
   selector: 'app-done',
   templateUrl: './done.component.html',
   styleUrls: ['./done.component.scss'],
 })
-
-export class DoneComponent  {
-  doneDictionaryList$!: Observable<Dictionary[]>;
-  messages: Message[] = [];
+export class DoneComponent extends Message {
+  doneDictionaryList$: Observable<Dictionary[]> = this.tasksService
+    .getDoneDictionaries()
+    .pipe(catchError((error) => this.handleError(error)));
 
   constructor(private tasksService: TasksService) {
-    this.doneDictionaryList$ = this.tasksService.getDoneDictionaries().pipe(
-      catchError((error) => {
-        this.messages = [
-          {
-            severity: 'error',
-            summary: 'Error',
-            detail: error.statusText,
-          },
-        ];
-        return of([]);
-      })
-    )
+    super();
   }
 
   onDeleteClick(id: string): void {
