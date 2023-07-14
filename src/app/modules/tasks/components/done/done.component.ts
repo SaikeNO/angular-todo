@@ -1,25 +1,20 @@
 import { Component } from '@angular/core';
-
-import { TasksService } from '../../tasks.service';
-import { Observable, catchError } from 'rxjs';
-import { Dictionary } from 'src/types/dictionary';
-import { Message } from 'src/app/shared/message/message';
+import { DoneStore } from './done.store';
 
 @Component({
   selector: 'app-done',
   templateUrl: './done.component.html',
   styleUrls: ['./done.component.scss'],
+  providers: [DoneStore],
 })
-export class DoneComponent extends Message {
-  doneDictionaryList$: Observable<Dictionary[]> = this.tasksService
-    .getDoneDictionaries()
-    .pipe(catchError((error) => this.handleError(error)));
+export class DoneComponent {
+  vm$ = this.store.vm$;
 
-  constructor(private tasksService: TasksService) {
-    super();
+  constructor(private store: DoneStore) {
+    this.store.getDoneDictionaries();
   }
 
   onDeleteClick(id: string): void {
-    this.tasksService.removeTask(id);
+    this.store.removeTask(id);
   }
 }

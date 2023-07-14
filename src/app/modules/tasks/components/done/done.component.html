@@ -1,27 +1,27 @@
-<ng-container *ngIf="doneDictionaryList$ | async as doneTaskList">
-  <p-table [value]="doneTaskList" [tableStyle]="{ 'min-width': '50rem' }">
+<ng-container *ngIf="vm$ | async as vm">
+  <p-table [value]="vm.doneDictionaries" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
       <tr>
-        <th>ID</th>
+        <th width="10%">ID</th>
         <th>Title</th>
-        <th>Date</th>
-        <th>Delete</th>
+        <th width="25%">Date</th>
+        <th width="10%">Delete</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-task let-i="rowIndex">
+    <ng-template *ngIf="vm.isLoading; else loading" pTemplate="body" let-dictionary let-i="rowIndex">
       <tr>
         <td>{{ i + 1 }}</td>
         <td>
           <p-button
-            [label]="task.label"
-            [routerLink]="['/tasks', task.id]"
+            [label]="dictionary.label"
+            [routerLink]="['/tasks', dictionary.id]"
             styleClass="p-button-link"
           ></p-button>
         </td>
-        <td>{{ task.date | date }}</td>
+        <td>{{ dictionary.date | date }}</td>
         <td>
           <p-button
-            (onClick)="onDeleteClick(task.id)"
+            (onClick)="onDeleteClick(dictionary.id)"
             icon="pi pi-times"
             styleClass="p-button-rounded p-button-text p-button-raised"
             title="Delete"
@@ -29,6 +29,14 @@
         </td>
       </tr>
     </ng-template>
+    <ng-template #loading pTemplate="body">
+      <tr>
+        <td><p-skeleton></p-skeleton></td>
+        <td><p-skeleton></p-skeleton></td>
+        <td><p-skeleton></p-skeleton></td>
+        <td><p-skeleton></p-skeleton></td>
+      </tr>
+    </ng-template>
   </p-table>
+  <p-messages [(value)]="vm.messages" [enableService]="false" [closable]="false"></p-messages>
 </ng-container>
-<p-messages [(value)]="messages" [enableService]="false" [closable]="false"></p-messages>

@@ -1,24 +1,21 @@
 import { Component } from '@angular/core';
-import { Observable, catchError } from 'rxjs';
-
-import { TasksService } from '../../tasks.service';
-import { Dictionary } from 'src/types/dictionary';
 import { Message } from 'src/app/shared/message/message';
+import { UnDoneStore } from './undone.store';
 @Component({
   selector: 'app-undone',
   templateUrl: './undone.component.html',
   styleUrls: ['./undone.component.scss'],
+  providers: [UnDoneStore]
 })
-export class UndoneComponent extends Message {
-  dictionaryList$: Observable<Dictionary[]> = this.tasksService
-    .getUnDoneDictionaries()
-    .pipe(catchError((error) => this.handleError(error)));
+export class UndoneComponent extends Message{
+  unDoneDictionaries$ = this.store.unDoneDictionaries$;
 
-  constructor(private tasksService: TasksService) {
+  constructor(private store: UnDoneStore) {
     super();
+    this.store.getUnDoneDictionaries({});
   }
 
   onDoneClick(id: string): void {
-    this.tasksService.doneTask(id);
+    this.store.doneTask(id);
   }
 }

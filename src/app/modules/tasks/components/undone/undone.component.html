@@ -1,5 +1,5 @@
-<ng-container *ngIf="dictionaryList$ | async as taskList">
-  <p-table [value]="taskList" [tableStyle]="{ 'min-width': '50rem' }">
+<ng-container *ngIf="unDoneDictionaries$ | async as dictionaryList">
+  <p-table [value]="dictionaryList" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
       <tr>
         <th>ID</th>
@@ -9,21 +9,21 @@
         <th width="2%">Done</th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-task let-i="rowIndex">
+    <ng-template pTemplate="body" let-dictionary let-i="rowIndex">
       <tr>
         <td>{{ i + 1 }}</td>
         <td>
           <p-button
-            [label]="task.label"
-            [routerLink]="['/tasks', task.id]"
-            [state]="{id: task.id}"
+            [label]="dictionary.label"
+            [routerLink]="['/tasks', dictionary.id]"
+            [state]="{id: dictionary.id}"
             styleClass="p-button-link"
           ></p-button>
         </td>
-        <td>{{ task.date | date }}</td>
+        <td>{{ dictionary.date | date }}</td>
         <td>
           <p-button
-            [routerLink]="['/tasks/' + task.id + '/edit']"
+            [routerLink]="['/tasks/' + dictionary.id + '/edit']"
             icon="pi pi-file-edit"
             styleClass="p-button-rounded p-button-text p-button-raised"
             title="Edit"
@@ -31,7 +31,7 @@
         </td>
         <td>
           <p-button
-            (onClick)="onDoneClick(task.id)"
+            (onClick)="onDoneClick(dictionary.id)"
             icon="pi pi-check"
             styleClass="p-button-rounded p-button-text p-button-raised"
             title="Done"

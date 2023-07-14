@@ -11,6 +11,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import { ToastModule } from 'primeng/toast';
     MessagesModule,
     MessageModule,
     ToastModule,
+    SkeletonModule,
   ]
 })
 export class PrimeNgModule { }

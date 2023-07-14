@@ -1,108 +1,101 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject, Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { Task } from 'src/types/task';
 import { environment } from 'src/environments/environment.development';
 import { Dictionary } from 'src/types/dictionary';
 
 @Injectable()
 export class TasksService {
-  taskList$ = new BehaviorSubject<Task[]>([]);
-
   constructor(private httpClient: HttpClient) {}
 
-  private getTasks(): Observable<Task[]> {
-    this.httpClient
-      .get<Task[]>(environment.apiUrl)
-      .pipe(
-        catchError((reponse:HttpErrorResponse) => {
-          this.taskList$.error(reponse);
-          return throwError(() => new Error(reponse.message));
-        }),
-        map((taskList) =>
-          taskList.map((task) => ({ ...task, date: new Date(task.date) }))
-        )
-      )
-      .subscribe((taskList) => this.taskList$.next(taskList));
+  private formatDate(task: Task): Task {
+    return { ...task, date: new Date(task.date) };
+  }
 
-    return this.taskList$.asObservable();
+  private convertToDictionary(task: Task): Dictionary {
+    return { id: task._id, label: task.title, date: task.date } as Dictionary;
+  }
+
+  getTasks(): Observable<Task[]> {
+    return this.httpClient.get<Task[]>(environment.apiUrl).pipe(
+      catchError((reponse: HttpErrorResponse) =>
+        throwError(() => new Error(reponse.statusText))
+      ),
+      map((taskList) => taskList.map(this.formatDate))
+    );
   }
 
   getTaskById(id: string): Observable<Task> {
-    return this.httpClient
-      .get<Task>(`${environment.apiUrl}/${id}`)
-      .pipe(map((task) => ({ ...task, date: new Date(task.date) })));
+    return this.httpClient.get<Task>(`${environment.apiUrl}/${id}`).pipe(
+      catchError((reponse: HttpErrorResponse) =>
+        throwError(() => new Error(reponse.message))
+      ),
+      map(this.formatDate)
+    );
   }
 
   getDoneDictionaries(): Observable<Dictionary[]> {
     return this.getTasks().pipe(
       map((taskList) => taskList.filter((task) => task.isDone)),
-      map((taskList) =>
-        taskList.map(
-          (task) =>
-            ({ id: task._id, label: task.title, date: task.date } as Dictionary)
-        )
-      )
+      map((taskList) => taskList.map(this.convertToDictionary))
     );
   }
 
   getUnDoneDictionaries(): Observable<Dictionary[]> {
     return this.getTasks().pipe(
       map((taskList) => taskList.filter((task) => !task.isDone)),
-      map((taskList) =>
-        taskList.map(
-          (task) =>
-            ({ id: task._id, label: task.title, date: task.date } as Dictionary)
-        )
-      )
+      map((taskList) => taskList.map(this.convertToDictionary))
     );
   }
 
   addTask(newTask: Task) {
-    return this.httpClient.post(environment.apiUrl, newTask);
+    return this.httpClient
+      .post(environment.apiUrl, newTask)
+      .pipe(
+        catchError((reponse: HttpErrorResponse) =>
+          throwError(() => new Error(reponse.message))
+        )
+      );
   }
 
   updateTask({ _id, title, description, date, isDone }: Task) {
-    return this.httpClient.put(`${environment.apiUrl}/${_id}`, {
-      title,
-      description,
-      date,
-      isDone,
-    });
+    return this.httpClient
+      .put(`${environment.apiUrl}/${_id}`, {
+        title,
+        description,
+        date,
+        isDone,
+      })
+      .pipe(
+        catchError((reponse: HttpErrorResponse) =>
+          throwError(() => new Error(reponse.message))
+        )
+      );
   }
 
-  removeTask(id: string): void {
-    this.httpClient.delete(`${environment.apiUrl}/${id}`).subscribe(() => {
-      const updateTaskList = this.taskList$
-        .getValue()
-        .filter((task) => task._id !== id);
-      this.taskList$.next(updateTaskList);
-    });
+  removeTask(id: string) {
+    return this.httpClient
+      .delete(`${environment.apiUrl}/${id}`)
+      .pipe(
+        catchError((reponse: HttpErrorResponse) =>
+          throwError(() => new Error(reponse.message))
+        )
+      );
   }
 
-  doneTask(id: string): void {
-    const foundTask = this.taskList$.getValue().find((task) => task._id === id);
-
-    if (!foundTask) return;
-
-    const { title, description, date } = foundTask;
-
-    this.httpClient
-      .put(`${environment.apiUrl}/${id}`, {
+  doneTask({ _id, title, description, date }: Task) {
+    return this.httpClient
+      .put(`${environment.apiUrl}/${_id}`, {
         title,
         description,
         date,
         isDone: true,
       })
-      .subscribe(() => {
-        const updateTaskList = this.taskList$.getValue().map((task) => {
-          if (task._id === id) {
-            task.isDone = true;
-          }
-          return task;
-        });
-
-        this.taskList$.next(updateTaskList);
-      });
+      .pipe(
+        catchError((reponse: HttpErrorResponse) =>
+          throwError(() => new Error(reponse.message))
+        )
+      );
   }
 }
