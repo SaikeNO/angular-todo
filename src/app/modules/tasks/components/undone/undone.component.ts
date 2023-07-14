@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Message } from 'src/app/shared/message/message';
 import { UnDoneStore } from './undone.store';
 @Component({
   selector: 'app-undone',
@@ -7,12 +6,11 @@ import { UnDoneStore } from './undone.store';
   styleUrls: ['./undone.component.scss'],
   providers: [UnDoneStore]
 })
-export class UndoneComponent extends Message{
-  unDoneDictionaries$ = this.store.unDoneDictionaries$;
+export class UndoneComponent{
+  vm$ = this.store.vm$;
 
   constructor(private store: UnDoneStore) {
-    super();
-    this.store.getUnDoneDictionaries({});
+    this.store.getUnDoneDictionaries();
   }
 
   onDoneClick(id: string): void {

@@ -1,46 +1,28 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ComponentStore, tapResponse } from '@ngrx/component-store';
+import { tapResponse } from '@ngrx/component-store';
 import { Observable } from 'rxjs';
 
 import { Dictionary } from 'src/types/dictionary';
 import { TasksService } from '../../tasks.service';
-import { Message } from 'primeng/api';
+import { DictionariesStore } from '../../dictionaries.store';
 
-interface DoneState {
-  dictionaries: Dictionary[];
-  isLoading: boolean;
-  messages: Message[];
-}
 
 @Injectable()
-export class DoneStore extends ComponentStore<DoneState> {
+export class DoneStore extends DictionariesStore {
   constructor(private tasksService: TasksService) {
-    super({ dictionaries: [], isLoading: false, messages: [] });
+    super();
   }
-
-  private setDictionaries = (dictionaries: Dictionary[]): void =>
-    this.patchState({ dictionaries });
-
-  private setIsLoading = (isLoading: boolean): void =>
-    this.patchState({ isLoading });
-
-  private setMessage = this.updater((state, message: Message) => ({
-    ...state,
-    messages: [...state.messages, message],
-  }));
 
   private readonly doneDictionaries$: Observable<Dictionary[]> = this.select(
     (state) => state.dictionaries
   );
-  private readonly isLoading$ = this.select((state) => state.isLoading);
-  private readonly messages$ = this.select((state) => state.messages);
 
-  readonly vm$ = this.select({
-    doneDictionaries: this.doneDictionaries$,
-    isLoading: this.isLoading$,
-    messages: this.messages$,
-  });
+  readonly vm$ = this.select(
+    this.baseSelect,
+    this.doneDictionaries$,
+    (state, dictionaries) => ({ ...state, dictionaries })  
+  );
 
   readonly getDoneDictionaries = this.effect(() => {
     this.setIsLoading(true);
@@ -53,6 +35,7 @@ export class DoneStore extends ComponentStore<DoneState> {
             summary: 'Error',
             detail: error.message,
           })
+          this.setIsLoading(false)
         },
         () => this.setIsLoading(false)
       )

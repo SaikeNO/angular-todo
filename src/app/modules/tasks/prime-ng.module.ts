@@ -11,7 +11,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { MessagesModule } from 'primeng/messages';
 import { MessageModule } from 'primeng/message';
 import { ToastModule } from 'primeng/toast';
-import { SkeletonModule } from 'primeng/skeleton';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @NgModule({
   imports: [
@@ -36,7 +36,7 @@ import { SkeletonModule } from 'primeng/skeleton';
     MessagesModule,
     MessageModule,
     ToastModule,
-    SkeletonModule,
+    ProgressBarModule,
   ]
 })
 export class PrimeNgModule { }
