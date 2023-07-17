@@ -14,7 +14,6 @@ import { TaskComponent } from './components/task/task.component';
 import { DoneComponent } from './components/done/done.component';
 
 import { TasksService } from './tasks.service';
-import { TasksStore } from './tasks.store';
 
 @NgModule({
   declarations: [
@@ -32,6 +31,6 @@ import { TasksStore } from './tasks.store';
     HttpClientModule,
     FormsModule,
   ],
-  providers: [TasksService, TasksStore],
+  providers: [TasksService],
 })
 export class TaskModule { }
