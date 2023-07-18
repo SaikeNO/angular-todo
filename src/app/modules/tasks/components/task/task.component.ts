@@ -14,16 +14,22 @@ import { Message } from 'src/app/shared/message/message';
 export class TaskComponent extends Message {
   task$!: Observable<Task>;
 
-  constructor(private tasksService: TasksService, private route: ActivatedRoute, private location: Location) {
+  constructor(
+    private tasksService: TasksService,
+    private route: ActivatedRoute,
+    private location: Location
+  ) {
     super();
     const taskId = this.route.snapshot.paramMap.get('id');
-    
-    if(taskId) {
-      this.task$ = this.tasksService.getTaskById(taskId).pipe(catchError((error) => this.handleError(error)));
-    };
+
+    if (taskId) {
+      this.task$ = this.tasksService
+        .getTaskById(taskId)
+        .pipe(catchError((error) => this.handleError(error)));
+    }
   }
 
-  onBack(): void{
+  onBack(): void {
     this.location.back();
   }
 }

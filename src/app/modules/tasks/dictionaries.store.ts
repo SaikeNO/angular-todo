@@ -30,7 +30,7 @@ export class DictionariesStore extends ComponentStore<StateModel> {
   private readonly isLoading$ = this.select((state) => state.isLoading);
   private readonly messages$ = this.select((state) => state.messages);
 
-  readonly baseSelect = this.select({
+  protected readonly baseSelect = this.select({
     isLoading: this.isLoading$,
     messages: this.messages$,
   });

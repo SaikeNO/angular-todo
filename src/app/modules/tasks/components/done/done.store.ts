@@ -7,7 +7,6 @@ import { Dictionary } from 'src/types/dictionary';
 import { TasksService } from '../../tasks.service';
 import { DictionariesStore } from '../../dictionaries.store';
 
-
 @Injectable()
 export class DoneStore extends DictionariesStore {
   constructor(private tasksService: TasksService) {
@@ -21,7 +20,7 @@ export class DoneStore extends DictionariesStore {
   readonly vm$ = this.select(
     this.baseSelect,
     this.doneDictionaries$,
-    (state, dictionaries) => ({ ...state, dictionaries })  
+    (state, dictionaries) => ({ ...state, dictionaries })
   );
 
   readonly getDoneDictionaries = this.effect(() => {
@@ -29,13 +28,13 @@ export class DoneStore extends DictionariesStore {
     return this.tasksService.getDoneDictionaries().pipe(
       tapResponse(
         this.setDictionaries,
-        (error: HttpErrorResponse) =>{
+        (error: HttpErrorResponse) => {
           this.setMessage({
             severity: 'error',
             summary: 'Error',
             detail: error.message,
-          })
-          this.setIsLoading(false)
+          });
+          this.setIsLoading(false);
         },
         () => this.setIsLoading(false)
       )

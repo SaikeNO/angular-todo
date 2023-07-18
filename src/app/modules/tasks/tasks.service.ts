@@ -9,12 +9,12 @@ import { Dictionary } from 'src/types/dictionary';
 export class TasksService {
   constructor(private httpClient: HttpClient) {}
 
-  private formatDate(task: Task): Task {
+  private convertToDate(task: Task): Task {
     return { ...task, date: new Date(task.date) };
   }
 
-  private convertToDictionary(task: Task): Dictionary {
-    return { id: task._id, label: task.title, date: task.date } as Dictionary;
+  private convertToDictionary({_id:id, title:label, date}: Task): Dictionary {
+    return { id, label, date } as Dictionary;
   }
 
   getTasks(): Observable<Task[]> {
@@ -22,7 +22,7 @@ export class TasksService {
       catchError((reponse: HttpErrorResponse) =>
         throwError(() => new Error(reponse.statusText))
       ),
-      map((taskList) => taskList.map(this.formatDate))
+      map((taskList) => taskList.map(this.convertToDate))
     );
   }
 
@@ -31,7 +31,7 @@ export class TasksService {
       catchError((reponse: HttpErrorResponse) =>
         throwError(() => new Error(reponse.message))
       ),
-      map(this.formatDate)
+      map(this.convertToDate)
     );
   }
 
