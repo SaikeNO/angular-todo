@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { tapResponse } from '@ngrx/component-store';
-import { Observable, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { Dictionary } from 'src/types/dictionary';
 import { TasksService } from '../../tasks.service';
