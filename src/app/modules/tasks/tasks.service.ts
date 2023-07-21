@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { Task } from 'src/types/task';
@@ -7,7 +7,7 @@ import { Dictionary } from 'src/types/dictionary';
 
 @Injectable()
 export class TasksService {
-  constructor(private httpClient: HttpClient) {}
+  private httpClient = inject(HttpClient);
 
   private convertToDate(task: Task): Task {
     return { ...task, date: new Date(task.date) };
