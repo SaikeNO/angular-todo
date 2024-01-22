@@ -13,7 +13,7 @@ export class TasksService {
     return { ...task, date: new Date(task.date) };
   }
 
-  private convertToDictionary({_id:id, title:label, date}: Task): Dictionary {
+  private convertToDictionary({id, title:label, date}: Task): Dictionary {
     return { id, label, date } as Dictionary;
   }
 
@@ -59,9 +59,9 @@ export class TasksService {
       );
   }
 
-  updateTask({ _id, title, description, date, isDone }: Task) {
+  updateTask({ id, title, description, date, isDone }: Task) {
     return this.httpClient
-      .put(`${environment.apiUrl}/${_id}`, {
+      .put(`${environment.apiUrl}/${id}`, {
         title,
         description,
         date,
@@ -84,9 +84,9 @@ export class TasksService {
       );
   }
 
-  doneTask({ _id, title, description, date }: Task) {
+  doneTask({ id, title, description, date }: Task) {
     return this.httpClient
-      .put(`${environment.apiUrl}/${_id}`, {
+      .put(`${environment.apiUrl}/${id}`, {
         title,
         description,
         date,
