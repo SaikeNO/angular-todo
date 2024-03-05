@@ -1,5 +1,5 @@
-export interface Dictionary{
-    id: string,
-    label: string,
-    date: Date
+export interface Dictionary {
+  _id: string;
+  label: string;
+  date: Date;
 }

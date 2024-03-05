@@ -46,7 +46,7 @@ export class DoneStore extends DictionariesStore {
     return {
       ...state,
       dictionaries: state.dictionaries.filter(
-        (dictionary) => dictionary.id !== taskId
+        (dictionary) => dictionary._id !== taskId
       ),
     };
   });

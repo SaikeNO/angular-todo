@@ -15,15 +15,15 @@
         <td>
           <p-button
             [label]="dictionary.label"
-            [routerLink]="['/tasks', dictionary.id]"
-            [state]="{id: dictionary.id}"
+            [routerLink]="['/tasks', dictionary._id]"
+            [state]="{ id: dictionary._id }"
             styleClass="p-button-link"
           ></p-button>
         </td>
         <td>{{ dictionary.date | date }}</td>
         <td>
           <p-button
-            [routerLink]="['/tasks/' + dictionary.id + '/edit']"
+            [routerLink]="['/tasks/' + dictionary._id + '/edit']"
             icon="pi pi-file-edit"
             styleClass="p-button-rounded p-button-text p-button-raised"
             title="Edit"
@@ -31,7 +31,7 @@
         </td>
         <td>
           <p-button
-            (onClick)="onDoneClick(dictionary.id)"
+            (onClick)="onDoneClick(dictionary._id)"
             icon="pi pi-check"
             styleClass="p-button-rounded p-button-text p-button-raised"
             title="Done"
@@ -40,6 +40,14 @@
       </tr>
     </ng-template>
   </p-table>
-  <p-progressBar *ngIf="vm.isLoading" mode="indeterminate" [style]="{ height: '6px'}"></p-progressBar>
-  <p-messages [(value)]="vm.messages" [enableService]="false" [closable]="false"></p-messages>
+  <p-progressBar
+    *ngIf="vm.isLoading"
+    mode="indeterminate"
+    [style]="{ height: '6px' }"
+  ></p-progressBar>
+  <p-messages
+    [(value)]="vm.messages"
+    [enableService]="false"
+    [closable]="false"
+  ></p-messages>
 </ng-container>

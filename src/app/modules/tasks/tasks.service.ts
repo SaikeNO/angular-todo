@@ -2,23 +2,31 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { Task } from 'src/types/task';
-import { environment } from 'src/environments/environment.development';
 import { Dictionary } from 'src/types/dictionary';
+import { ApiService } from 'src/app/shared/api.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class TasksService {
   private httpClient = inject(HttpClient);
+  public apiUrl = '';
+  private apiService = inject(ApiService);
+
+  constructor() {
+    this.apiService.fetchNewApiUrl().subscribe(() => {
+      this.apiUrl = this.apiService.apiUrl;
+    });
+  }
 
   private convertToDate(task: Task): Task {
     return { ...task, date: new Date(task.date) };
   }
 
-  private convertToDictionary({id, title:label, date}: Task): Dictionary {
-    return { id, label, date } as Dictionary;
+  private convertToDictionary({ _id, title: label, date }: Task): Dictionary {
+    return { _id, label, date } as Dictionary;
   }
 
   getTasks(): Observable<Task[]> {
-    return this.httpClient.get<Task[]>(environment.apiUrl).pipe(
+    return this.httpClient.get<Task[]>(this.apiUrl).pipe(
       catchError((reponse: HttpErrorResponse) =>
         throwError(() => new Error(reponse.statusText))
       ),
@@ -27,7 +35,7 @@ export class TasksService {
   }
 
   getTaskById(id: string): Observable<Task> {
-    return this.httpClient.get<Task>(`${environment.apiUrl}/${id}`).pipe(
+    return this.httpClient.get<Task>(`${this.apiUrl}/${id}`).pipe(
       catchError((reponse: HttpErrorResponse) =>
         throwError(() => new Error(reponse.message))
       ),
@@ -51,7 +59,7 @@ export class TasksService {
 
   addTask(newTask: Task) {
     return this.httpClient
-      .post(environment.apiUrl, newTask)
+      .post(this.apiUrl, newTask)
       .pipe(
         catchError((reponse: HttpErrorResponse) =>
           throwError(() => new Error(reponse.message))
@@ -59,9 +67,9 @@ export class TasksService {
       );
   }
 
-  updateTask({ id, title, description, date, isDone }: Task) {
+  updateTask({ _id, title, description, date, isDone }: Task) {
     return this.httpClient
-      .put(`${environment.apiUrl}/${id}`, {
+      .put(`${this.apiUrl}/${_id}`, {
         title,
         description,
         date,
@@ -76,7 +84,7 @@ export class TasksService {
 
   removeTask(id: string) {
     return this.httpClient
-      .delete(`${environment.apiUrl}/${id}`)
+      .delete(`${this.apiUrl}/${id}`)
       .pipe(
         catchError((reponse: HttpErrorResponse) =>
           throwError(() => new Error(reponse.message))
@@ -84,9 +92,9 @@ export class TasksService {
       );
   }
 
-  doneTask({ id, title, description, date }: Task) {
+  doneTask({ _id, title, description, date }: Task) {
     return this.httpClient
-      .put(`${environment.apiUrl}/${id}`, {
+      .put(`${this.apiUrl}/${_id}`, {
         title,
         description,
         date,

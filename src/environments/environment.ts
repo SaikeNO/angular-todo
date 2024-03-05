@@ -1,4 +1,4 @@
 export const environment = {
-    production: true,
-    apiUrl: 'https://crudcrud.com/api/f31dffcb98184748870c044e6aedb716/todo',
+  production: false,
+  api_key: '962ec4e5c5a9400c9d8fc3369ef3ecf9',
 };
