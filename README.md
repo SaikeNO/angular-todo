@@ -1,27 +1,39 @@
-# Todo
+# Aplikacja do zarządzania zadaniami
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.3.
+## Opis
 
-## Development server
+Aplikacja do zarządzania zadaniami to narzędzie stworzone w oparciu o framework Angular, które umożliwia użytkownikom skuteczne planowanie, śledzenie i zarządzanie swoimi zadaniami w sposób efektywny.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Funkcje
 
-## Code scaffolding
+- **Dodawanie zadań:** Użytkownicy mogą dodawać nowe zadania, określając ich tytuł, opis, termin wykonania itp.
+- **Przeglądanie zadań:** Interfejs umożliwia łatwe przeglądanie istniejących zadań w formie listy.
+- **Edycja i usuwanie zadań:** Użytkownicy mogą edytować istniejące zadania, zmieniając ich szczegóły lub usuwając je z listy.
+- **Oznaczanie zadań jako zakończone:** Istnieje opcja oznaczania zadań jako zakończone, co pomaga użytkownikom śledzić postęp i osiągnięcia.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Technologie
 
-## Build
+Aplikacja do zarządzania zadaniami została zbudowana w oparciu o następujące technologie:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- Angular: Framework JavaScript do budowania aplikacji internetowych.
+- TypeScript: Rozszerzenie języka JavaScript o statyczną typizację.
+- HTML/CSS: Języki do tworzenia struktury i stylizacji interfejsu użytkownika.
+- RxJS: Biblioteka reaktywnego programowania do obsługi asynchronicznych operacji.
+- Angular Component Store: Mechanizm do zarządzania stanem komponentów w aplikacji Angular.
+- CRUD: Wykorzystanie API ze strony https://crudcrud.com/ do przechowywania danych aplikacji.
 
-## Running unit tests
+## Zrzuty ekranu
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+![Screen 1](list.png)
 
-## Running end-to-end tests
+![Screen 2](add_new.png)
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Instalacja
 
-## Further help
+Aby zainstalować aplikację lokalnie, wykonaj następujące kroki:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+1. Sklonuj repozytorium z kodem aplikacji.
+2. Przejdź do katalogu głównego aplikacji w terminalu.
+3. Wykonaj polecenie `npm install` w celu zainstalowania zależności.
+4. Uruchom aplikację za pomocą polecenia `ng serve`.
+5. Otwórz przeglądarkę internetową i przejdź pod adres `http://localhost:4200/`, aby korzystać z aplikacji.
